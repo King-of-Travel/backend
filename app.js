@@ -3,6 +3,7 @@ const createError = require("http-errors");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const i18n = require("i18n");
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
@@ -12,6 +13,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(i18n.init);
 
 app.use(require("./routes"));
 
@@ -34,6 +36,13 @@ app.use(function(err, req, res, next) {
       error: {}
     }
   });
+});
+
+i18n.configure({
+  locales: ["en", "ru"],
+  cookie: "language",
+  directory: __dirname + "/locales",
+  defaultLocale: "en"
 });
 
 module.exports = app;
