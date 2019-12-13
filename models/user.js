@@ -1,8 +1,8 @@
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
 
 module.exports = (sequelize, DataTypes) => {
   const user = sequelize.define(
-    "user",
+    'user',
     {
       id: {
         type: DataTypes.INTEGER,
@@ -16,13 +16,13 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isEmail: {
             args: true,
-            msg: "not-email"
+            msg: 'not-email'
           },
           async unique(email) {
             await sequelize.models.user
               .findOne({ where: { email } })
               .then(user => {
-                if (user) throw new Error("not-unique-email");
+                if (user) throw new Error('not-unique-email');
               });
           }
         }
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           len: {
             args: [6, 64],
-            msg: "not-correct-length-password"
+            msg: 'not-correct-length-password'
           }
         }
       },
@@ -44,17 +44,17 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           len: {
             args: [4, 30],
-            msg: "not-correct-length-username"
+            msg: 'not-correct-length-username'
           },
           is: {
-            args: ["^[a-zA-Z0-9]+$"],
-            msg: "forbidden-symbols-username"
+            args: ['^[a-zA-Z0-9]+$'],
+            msg: 'forbidden-symbols-username'
           },
           async unique(username) {
             await sequelize.models.user
               .findOne({ where: { username } })
               .then(user => {
-                if (user) throw new Error("not-unique-username");
+                if (user) throw new Error('not-unique-username');
               });
           }
         }

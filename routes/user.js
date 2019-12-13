@@ -1,11 +1,11 @@
-const express = require("express");
+const express = require('express');
 
-const models = require("../models");
-const { sequelizeValidation } = require("../middlewares/error-handler");
+const models = require('../models');
+const { sequelizeValidation } = require('../middlewares/error-handler');
 
 const router = express.Router();
 
-router.put("/", function(req, res, next) {
+router.put('/', (req, res, next) => {
   const { email, password, username } = req.body;
 
   models.user

@@ -1,4 +1,4 @@
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize');
 
 function sequelizeValidation(errorModel, statusCode, res) {
   if (errorModel instanceof Sequelize.ValidationError) {
