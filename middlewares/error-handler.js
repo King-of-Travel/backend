@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-function sequelizeValidation(errorModel, statusCode, res) {
+function sequelizeValidation(errorModel, statusCode, res, next) {
   if (errorModel instanceof Sequelize.ValidationError) {
     const errors = {};
 
@@ -10,6 +10,8 @@ function sequelizeValidation(errorModel, statusCode, res) {
 
     return res.status(statusCode).send({ errors });
   }
+
+  return next(errorModel);
 }
 
 module.exports = { sequelizeValidation };

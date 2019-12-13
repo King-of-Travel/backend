@@ -11,7 +11,7 @@ router.put('/', (req, res, next) => {
   models.user
     .create({ email, password, username })
     .then(() => res.sendStatus(201))
-    .catch(error => sequelizeValidation(error, 403, res))
+    .catch(error => sequelizeValidation(error, 403, res, next))
     .catch(next);
 });
 
