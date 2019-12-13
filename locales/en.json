@@ -4,5 +4,7 @@
   "not-correct-length-password": "Password must be between 6 and 64 characters",
   "not-correct-length-username": "Username must be between 4 and 30 characters",
   "forbidden-symbols-username": "The username must contain only letters and numbers",
-  "not-unique-username": "Username is not available"
+  "not-unique-username": "Username is not available",
+  "no-username-password": "You must specify username(e-mail) and password",
+  "incorrect-username-password": "Incorrect username(e-mail) or password"
 }

@@ -4,5 +4,7 @@
   "not-correct-length-password": "Пароль должен быть от 6 до 64 символов",
   "not-correct-length-username": "Имя пользователя должно быть от 4 до 30 символов",
   "forbidden-symbols-username": "Имя пользователя должно состоять только из букв и цифр",
-  "not-unique-username": "Имя пользователя занято"
+  "not-unique-username": "Имя пользователя занято",
+  "no-username-password": "Необходимо указать имя пользователя(e-mail) и пароль",
+  "incorrect-username-password": "Неправильное имя пользователя(e-mail) или пароль"
 }
