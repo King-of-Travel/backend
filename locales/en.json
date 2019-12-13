@@ -1,1 +1,8 @@
-{}
+{
+  "not-email": "You must fill out an e-mail in the following format: example@example.com",
+  "not-unique-email": "Account with this e-mail is already registered",
+  "not-correct-length-password": "Password must be between 6 and 64 characters",
+  "not-correct-length-username": "Username must be between 4 and 30 characters",
+  "forbidden-symbols-username": "The username must contain only letters and numbers",
+  "not-unique-username": "Username is not available"
+}
