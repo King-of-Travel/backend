@@ -30,12 +30,7 @@ app.use(function(err, req, res, next) {
 
   res.status(err.status || 500);
 
-  res.json({
-    errors: {
-      message: err.message,
-      error: {}
-    }
-  });
+  res.json({ message: err.message });
 });
 
 i18n.configure({
