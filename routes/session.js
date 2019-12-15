@@ -23,12 +23,11 @@ router.post('/', (req, res, next) => {
         return next(createError(404, res.__('incorrect-username-password')));
       }
 
-      const token = user.createToken();
-      const { email, username } = user;
+      const userResponse = { email: user.email, username: user.username };
 
+      req.session.user = userResponse;
       res.status(201).json({
-        token,
-        user: { email, username }
+        user: userResponse
       });
     })
     .catch(next);
