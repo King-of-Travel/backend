@@ -1,21 +1,28 @@
 const express = require('express');
 const createError = require('http-errors');
-const Op = require('sequelize').Op;
+const { validationResult } = require('express-validator');
+const { Op } = require('sequelize');
+
+const errorHandler = require('../middlewares/error-handler');
+const validation = require('../middlewares/validation');
 
 const models = require('../models');
 
 const router = express.Router();
 
-router.post('/', (req, res, next) => {
-  const { username, password } = req.body;
+router.post('/', validation('createSession'), (req, res, next) => {
+  const validationErrors = validationResult(req);
 
-  if (!username || !password) {
-    return next(createError(404, res.__('no-username-password')));
+  if (!validationErrors.isEmpty()) {
+    return errorHandler(validationErrors.errors, 400, res, next);
   }
+
+  const { username, password } = req.body;
+  const where = { [Op.or]: [{ username }, { email: username }] };
 
   models.user
     .findOne({
-      where: { [Op.or]: [{ username }, { email: username }] },
+      where,
       attributes: ['id', 'email', 'password', 'username']
     })
     .then(user => {
@@ -26,6 +33,7 @@ router.post('/', (req, res, next) => {
       const userResponse = { email: user.email, username: user.username };
 
       req.session.user = userResponse;
+
       res.status(201).json({
         user: userResponse
       });

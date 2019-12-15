@@ -6,7 +6,7 @@ const logger = require('morgan');
 const i18n = require('i18n');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple');
-const pg = require('pg');
+const { Pool } = require('pg');
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -15,7 +15,7 @@ const app = express();
 /*
  * Sessions
  */
-const sessionPool = new pg.Pool({
+const sessionPool = new Pool({
   user: process.env.DB_USERNAME,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD
@@ -63,7 +63,7 @@ app.use(function(err, req, res, next) {
 
   res.status(err.status || 500);
 
-  res.json({ message: err.message });
+  res.json({ errors: { message: err.message } });
 });
 
 i18n.configure({
