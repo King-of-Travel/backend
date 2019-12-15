@@ -7,7 +7,7 @@ const validation = require('../middlewares/validation');
 
 const router = express.Router();
 
-router.put('/', validation('createUser'), (req, res, next) => {
+router.post('/', validation('createUser'), (req, res, next) => {
   const validationErrors = validationResult(req);
 
   if (!validationErrors.isEmpty()) {
