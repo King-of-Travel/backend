@@ -7,6 +7,10 @@ const validation = require('../middlewares/validation');
 
 const router = express.Router();
 
+/*
+ * Create an account
+ * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#f93a6969-8d9d-409e-a583-e549645c8223
+ */
 router.post('/', validation('createUser'), (req, res, next) => {
   const validationErrors = validationResult(req);
 
