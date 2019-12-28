@@ -7,5 +7,6 @@
   "forbidden-symbols-username": "The username must contain only letters and numbers",
   "not-unique-username": "Username is not available",
   "no-username-password": "You must specify username(e-mail) and password",
-  "incorrect-username-password": "Incorrect username(e-mail) or password"
+  "incorrect-username-password": "Incorrect username(e-mail) or password",
+  "user-not-logged": "You must be logged in"
 }

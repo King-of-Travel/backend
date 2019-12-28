@@ -7,5 +7,6 @@
   "forbidden-symbols-username": "Имя пользователя должно состоять только из букв и цифр",
   "not-unique-username": "Имя пользователя занято",
   "no-username-password": "Необходимо указать имя пользователя(e-mail) и пароль",
-  "incorrect-username-password": "Неправильное имя пользователя(e-mail) или пароль"
+  "incorrect-username-password": "Неправильное имя пользователя(e-mail) или пароль",
+  "user-not-logged": "Вы должны быть авторизованы"
 }
