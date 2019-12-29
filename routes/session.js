@@ -37,10 +37,7 @@ router.post('/', validation('createSession'), (req, res, next) => {
       const userResponse = { email: user.email, username: user.username };
 
       req.session.user = userResponse;
-
-      res.status(201).json({
-        user: userResponse
-      });
+      res.status(201).json(userResponse);
     })
     .catch(next);
 });
