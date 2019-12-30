@@ -8,5 +8,10 @@
   "not-unique-username": "Username is not available",
   "no-username-password": "You must specify username(e-mail) and password",
   "incorrect-username-password": "Incorrect username(e-mail) or password",
-  "user-not-logged": "You must be logged in"
+  "user-not-logged": "You must be logged in",
+  "not-correct-trip-name-length": "Your trip name must be up to 150 characters",
+  "not-correct-trip-country-code": "Invalid country code",
+  "not-correct-trip-city-length": "City name must be between 2 and 300 characters",
+  "not-correct-trip-start-date": "Invalid start date",
+  "not-correct-trip-end-date": "Invalid end date"
 }

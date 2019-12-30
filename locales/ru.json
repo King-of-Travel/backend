@@ -8,5 +8,10 @@
   "not-unique-username": "Имя пользователя занято",
   "no-username-password": "Необходимо указать имя пользователя(e-mail) и пароль",
   "incorrect-username-password": "Неправильное имя пользователя(e-mail) или пароль",
-  "user-not-logged": "Вы должны быть авторизованы"
+  "user-not-logged": "Вы должны быть авторизованы",
+  "not-correct-trip-name-length": "Название вашей поездки должно быть до 150 символов",
+  "not-correct-trip-country-code": "Некорректный код страны",
+  "not-correct-trip-city-length": "Название города должно быть от 2 до 300 символов",
+  "not-correct-trip-start-date": "Неккоректная дата начала поездки",
+  "not-correct-trip-end-date": "Неккоректная дата окончания поездки"
 }
