@@ -32,4 +32,23 @@ router.post(
   }
 );
 
+/*
+ * Add past trip
+ * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#3f694889-32df-4b6c-902d-d5a91b036ee1
+ */
+router.post('/past', auth, validation('createPastTrip'), (req, res, next) => {
+  const validationErrors = validationResult(req);
+
+  if (!validationErrors.isEmpty()) {
+    return errorHandler(validationErrors.errors, 400, res, next);
+  }
+
+  const { name, countryCode, city, description, startDate, endDate } = req.body;
+
+  models.trip
+    .create({ name, countryCode, city, description, startDate, endDate })
+    .then(({ id }) => res.status(201).json(id))
+    .catch(next);
+});
+
 module.exports = router;

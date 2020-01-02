@@ -23,6 +23,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(2),
         allowNull: false
       },
+      description: {
+        type: DataTypes.STRING(2500),
+        validate: {
+          len: {
+            args: [1, 2500],
+            msg: 'not-correct-trip-description-length'
+          }
+        }
+      },
       city: {
         type: DataTypes.STRING(300),
         allowNull: false,
@@ -34,12 +43,10 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       startDate: {
-        type: DataTypes.DATE,
-        allowNull: false
+        type: DataTypes.DATE
       },
       endDate: {
-        type: DataTypes.DATE,
-        allowNull: false
+        type: DataTypes.DATE
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE

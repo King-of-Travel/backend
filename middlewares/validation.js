@@ -68,6 +68,30 @@ module.exports = method => {
           .custom(validationDateFutureTrip)
           .withMessage('not-correct-trip-end-date')
       ];
+
+    case 'createPastTrip':
+      return [
+        body('name')
+          .isLength({ max: 150 })
+          .withMessage('not-correct-trip-name-length'),
+        body('countryCode')
+          .custom(validationCountriesName)
+          .withMessage('not-correct-trip-country-code'),
+        body('city')
+          .isLength({ min: 2, max: 300 })
+          .withMessage('not-correct-trip-city-length'),
+        body('description')
+          .isLength({ max: 2500 })
+          .withMessage('not-correct-trip-description-length'),
+        body('startDate')
+          .if(value => value)
+          .custom(validationDateFutureTrip)
+          .withMessage('not-correct-trip-start-date'),
+        body('endDate')
+          .if(value => value)
+          .custom(validationDateFutureTrip)
+          .withMessage('not-correct-trip-end-date')
+      ];
     default:
       break;
   }
