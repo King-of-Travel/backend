@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false
       },
+      author: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
       name: {
         type: DataTypes.STRING(150),
         allowNull: true,
@@ -26,8 +30,8 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         type: DataTypes.STRING(2500),
         validate: {
-          len: {
-            args: [1, 2500],
+          max: {
+            args: 2500,
             msg: 'not-correct-trip-description-length'
           }
         }
@@ -55,8 +59,22 @@ module.exports = (sequelize, DataTypes) => {
     {
       hooks: {
         beforeValidate: [
-          function(trip) {
+          function createId(trip) {
             trip.id = nanoid(7);
+          },
+          async function setUser(trip) {
+            const user = trip.author;
+
+            if (typeof user === 'number') return;
+
+            await sequelize.models.user
+              .findOne({
+                where: { email: trip.author },
+                attributes: ['id']
+              })
+              .then(user => {
+                trip.author = user.id;
+              });
           }
         ]
       }

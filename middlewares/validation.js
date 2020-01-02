@@ -81,14 +81,15 @@ module.exports = method => {
           .isLength({ min: 2, max: 300 })
           .withMessage('not-correct-trip-city-length'),
         body('description')
+          .if(value => !!value)
           .isLength({ max: 2500 })
           .withMessage('not-correct-trip-description-length'),
         body('startDate')
-          .if(value => value)
+          .if(value => !!value)
           .custom(validationDateFutureTrip)
           .withMessage('not-correct-trip-start-date'),
         body('endDate')
-          .if(value => value)
+          .if(value => !!value)
           .custom(validationDateFutureTrip)
           .withMessage('not-correct-trip-end-date')
       ];

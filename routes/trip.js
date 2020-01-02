@@ -34,10 +34,11 @@ router.get('/:idTrip', (req, res, next) => {
     .then(trip => {
       if (!trip) return next(createError(404));
 
+      // Need to return user username
       models.user
-        .findOne({ where: { id: trip.user }, attributes: ['username'] })
-        .then(user => {
-          res.status(200).json({ ...trip.dataValues, user: user.username });
+        .findOne({ where: { id: trip.author }, attributes: ['username'] })
+        .then(author => {
+          res.status(200).json({ ...trip.dataValues, author: author.username });
         })
         .catch(next);
     });
@@ -59,9 +60,10 @@ router.post(
     }
 
     const { name, countryCode, city, startDate, endDate } = req.body;
+    const { email } = req.session.user;
 
     models.trip
-      .create({ name, countryCode, city, startDate, endDate })
+      .create({ author: email, name, countryCode, city, startDate, endDate })
       .then(({ id }) => res.status(201).json(id))
       .catch(next);
   }
@@ -79,9 +81,18 @@ router.post('/past', auth, validation('createPastTrip'), (req, res, next) => {
   }
 
   const { name, countryCode, city, description, startDate, endDate } = req.body;
+  const { email } = req.session.user;
 
   models.trip
-    .create({ name, countryCode, city, description, startDate, endDate })
+    .create({
+      author: email,
+      name,
+      countryCode,
+      city,
+      description,
+      startDate,
+      endDate
+    })
     .then(({ id }) => res.status(201).json(id))
     .catch(next);
 });
