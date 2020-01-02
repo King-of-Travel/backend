@@ -1,4 +1,5 @@
 const express = require('express');
+const createError = require('http-errors');
 const { validationResult } = require('express-validator');
 
 const auth = require('../middlewares/auth');
@@ -7,6 +8,40 @@ const errorHandler = require('../middlewares/error-handler');
 const models = require('../models');
 
 const router = express.Router();
+
+/*
+ * Getting Trip Articles
+ * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#e944b0b0-b7f9-4c86-a284-0918df736035
+ */
+router.get('/:idTrip', (req, res, next) => {
+  const { idTrip } = req.params;
+
+  models.trip
+    .findOne({
+      where: { id: idTrip },
+      attributes: [
+        'id',
+        'author',
+        'name',
+        'countryCode',
+        'description',
+        'city',
+        'startDate',
+        'endDate',
+        'createdAt'
+      ]
+    })
+    .then(trip => {
+      if (!trip) return next(createError(404));
+
+      models.user
+        .findOne({ where: { id: trip.user }, attributes: ['username'] })
+        .then(user => {
+          res.status(200).json({ ...trip.dataValues, user: user.username });
+        })
+        .catch(next);
+    });
+});
 
 /*
  * Add future trip

@@ -14,5 +14,6 @@
   "not-correct-trip-city-length": "Название города должно быть от 2 до 300 символов",
   "not-correct-trip-start-date": "Неккоректная дата начала поездки",
   "not-correct-trip-end-date": "Неккоректная дата окончания поездки",
-  "not-correct-trip-description-length": "Описание поездки не должно быть длиннее 2500 символов"
+  "not-correct-trip-description-length": "Описание поездки не должно быть длиннее 2500 символов",
+  "trip-not-found": "Поездка не найдена"
 }

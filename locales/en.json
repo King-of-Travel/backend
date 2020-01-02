@@ -14,5 +14,6 @@
   "not-correct-trip-city-length": "City name must be between 2 and 300 characters",
   "not-correct-trip-start-date": "Invalid start date",
   "not-correct-trip-end-date": "Invalid end date",
-  "not-correct-trip-description-length": "Trip description must not be longer than 2500 characters"
+  "not-correct-trip-description-length": "Trip description must not be longer than 2500 characters",
+  "trip-not-found": "Trip not found"
 }
