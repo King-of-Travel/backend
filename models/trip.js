@@ -46,6 +46,10 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
+      private: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      },
       startDate: {
         type: DataTypes.DATE
       },

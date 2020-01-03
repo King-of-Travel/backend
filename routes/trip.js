@@ -13,7 +13,7 @@ const router = express.Router();
  * Getting Trip Articles
  * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#e944b0b0-b7f9-4c86-a284-0918df736035
  */
-router.get('/:idTrip', (req, res, next) => {
+router.get('/article/:idTrip', (req, res, next) => {
   const { idTrip } = req.params;
 
   models.trip
@@ -28,11 +28,13 @@ router.get('/:idTrip', (req, res, next) => {
         'city',
         'startDate',
         'endDate',
-        'createdAt'
+        'createdAt',
+        'private'
       ]
     })
     .then(trip => {
-      if (!trip) return next(createError(404));
+      if (!trip || trip.description === null || trip.private)
+        return next(createError(404));
 
       // Need to return user username
       models.user
@@ -59,11 +61,19 @@ router.post(
       return errorHandler(validationErrors.errors, 400, res, next);
     }
 
-    const { name, countryCode, city, startDate, endDate } = req.body;
+    const { name, countryCode, city, startDate, endDate, private } = req.body;
     const { email } = req.session.user;
 
     models.trip
-      .create({ author: email, name, countryCode, city, startDate, endDate })
+      .create({
+        author: email,
+        name,
+        countryCode,
+        city,
+        startDate,
+        endDate,
+        private
+      })
       .then(({ id }) => res.status(201).json(id))
       .catch(next);
   }
@@ -80,7 +90,15 @@ router.post('/past', auth, validation('createPastTrip'), (req, res, next) => {
     return errorHandler(validationErrors.errors, 400, res, next);
   }
 
-  const { name, countryCode, city, description, startDate, endDate } = req.body;
+  const {
+    name,
+    countryCode,
+    city,
+    description,
+    startDate,
+    endDate,
+    private
+  } = req.body;
   const { email } = req.session.user;
 
   models.trip
@@ -91,7 +109,8 @@ router.post('/past', auth, validation('createPastTrip'), (req, res, next) => {
       city,
       description,
       startDate,
-      endDate
+      endDate,
+      private
     })
     .then(({ id }) => res.status(201).json(id))
     .catch(next);
