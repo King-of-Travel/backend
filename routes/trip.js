@@ -22,9 +22,9 @@ router.get('/article/:idTrip', (req, res, next) => {
       attributes: [
         'id',
         'author',
-        'name',
+        'title',
         'countryCode',
-        'description',
+        'article',
         'city',
         'startDate',
         'endDate',
@@ -33,7 +33,7 @@ router.get('/article/:idTrip', (req, res, next) => {
       ]
     })
     .then(trip => {
-      if (!trip || trip.description === null || trip.private)
+      if (!trip || trip.article === null || trip.private)
         return next(createError(404));
 
       // Need to return user username
@@ -61,13 +61,13 @@ router.post(
       return errorHandler(validationErrors.errors, 400, res, next);
     }
 
-    const { name, countryCode, city, startDate, endDate, private } = req.body;
+    const { title, countryCode, city, startDate, endDate, private } = req.body;
     const { email } = req.session.user;
 
     models.trip
       .create({
         author: email,
-        name,
+        title,
         countryCode,
         city,
         startDate,
@@ -91,10 +91,10 @@ router.post('/past', auth, validation('createPastTrip'), (req, res, next) => {
   }
 
   const {
-    name,
+    title,
     countryCode,
     city,
-    description,
+    article,
     startDate,
     endDate,
     private
@@ -104,10 +104,10 @@ router.post('/past', auth, validation('createPastTrip'), (req, res, next) => {
   models.trip
     .create({
       author: email,
-      name,
+      title,
       countryCode,
       city,
-      description,
+      article,
       startDate,
       endDate,
       private

@@ -13,13 +13,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      name: {
+      title: {
         type: DataTypes.STRING(150),
         allowNull: true,
         validate: {
           max: {
             args: 150,
-            msg: 'not-correct-trip-name-length'
+            msg: 'not-correct-trip-title-length'
           }
         }
       },
@@ -27,12 +27,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(2),
         allowNull: false
       },
-      description: {
+      article: {
         type: DataTypes.STRING(2500),
         validate: {
           max: {
             args: 2500,
-            msg: 'not-correct-trip-description-length'
+            msg: 'not-correct-trip-article-length'
           }
         }
       },

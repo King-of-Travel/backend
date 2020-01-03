@@ -54,7 +54,7 @@ module.exports = method => {
       return [
         body('name')
           .isLength({ max: 150 })
-          .withMessage('not-correct-trip-name-length'),
+          .withMessage('not-correct-trip-title-length'),
         body('countryCode')
           .custom(validationCountriesName)
           .withMessage('not-correct-trip-country-code'),
@@ -71,19 +71,19 @@ module.exports = method => {
 
     case 'createPastTrip':
       return [
-        body('name')
+        body('title')
           .isLength({ max: 150 })
-          .withMessage('not-correct-trip-name-length'),
+          .withMessage('not-correct-trip-title-length'),
         body('countryCode')
           .custom(validationCountriesName)
           .withMessage('not-correct-trip-country-code'),
         body('city')
           .isLength({ min: 2, max: 300 })
           .withMessage('not-correct-trip-city-length'),
-        body('description')
+        body('article')
           .if(value => !!value)
           .isLength({ max: 2500 })
-          .withMessage('not-correct-trip-description-length'),
+          .withMessage('not-correct-trip-article-length'),
         body('startDate')
           .if(value => !!value)
           .custom(validationDateFutureTrip)
