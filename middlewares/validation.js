@@ -22,32 +22,35 @@ module.exports = method => {
     case 'createSession':
       return [
         body('username')
+          .exists()
+          .withMessage('no-username-field')
+          .trim()
           .isLength({
             min: 4,
             max: 255
           })
-          .withMessage('not-correct-length-usernameOrEmail'),
+          .withMessage('incorrect-username-or-email-field-length'),
         body('password')
+          .exists()
+          .withMessage('no-password-field')
+          .trim()
           .isLength({
             min: 6,
             max: 64
           })
-          .withMessage('not-correct-length-password')
+          .withMessage('incorrect-password-field-length')
       ];
     case 'createUser':
       return [
-        body('email', 'not-email')
-          .isEmail()
-          .withMessage('not-email'),
-        body('password')
-          .isLength({
-            min: 6,
-            max: 64
-          })
-          .withMessage('not-correct-length-password'),
-        body('username')
-          .isLength({ min: 4, max: 30 })
-          .withMessage('not-correct-length-username')
+        body('email', 'no-email-field')
+          .exists()
+          .trim(),
+        body('password', 'no-password-field')
+          .exists()
+          .trim(),
+        body('username', 'no-username-field')
+          .exists()
+          .trim()
       ];
 
     case 'createFutureTrip':

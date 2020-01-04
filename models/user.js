@@ -10,9 +10,12 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true
       },
       email: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING(64),
         allowNull: false,
         unique: true,
+        set(email) {
+          this.setDataValue('email', email.toLowerCase());
+        },
         validate: {
           isEmail: {
             args: true,
@@ -28,23 +31,23 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       password: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(60),
         allowNull: false,
         validate: {
           len: {
             args: [6, 64],
-            msg: 'not-correct-length-password'
+            msg: 'incorrect-password-field-length'
           }
         }
       },
       username: {
         type: DataTypes.STRING(30),
-        unique: true,
         allowNull: false,
+        unique: true,
         validate: {
           len: {
             args: [4, 30],
-            msg: 'not-correct-length-username'
+            msg: 'incorrect-length-username-length'
           },
           is: {
             args: ['^[a-zA-Z0-9]+$'],
@@ -66,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       hooks: {
         beforeCreate: [
-          function(user) {
+          async function(user) {
             user.password = bcrypt.hashSync(user.password, 10);
           }
         ]

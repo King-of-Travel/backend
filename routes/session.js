@@ -22,7 +22,7 @@ router.post('/', validation('createSession'), (req, res, next) => {
   }
 
   const { username, password } = req.body;
-  const where = { [Op.or]: [{ username }, { email: username }] };
+  const where = { [Op.or]: [{ username }, { email: username.toLowerCase() }] };
 
   models.user
     .findOne({
