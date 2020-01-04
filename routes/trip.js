@@ -67,7 +67,7 @@ router.post(
     models.trip
       .create({
         author: email,
-        title,
+        title: title || null,
         countryCode,
         city,
         startDate,
@@ -104,12 +104,12 @@ router.post('/past', auth, validation('createPastTrip'), (req, res, next) => {
   models.trip
     .create({
       author: email,
-      title,
+      title: title || null,
       countryCode,
       city,
-      article,
-      startDate,
-      endDate,
+      article: article || null,
+      startDate: startDate || null,
+      endDate: endDate || null,
       private
     })
     .then(({ id }) => res.status(201).json(id))

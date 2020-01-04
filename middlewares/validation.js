@@ -86,10 +86,12 @@ module.exports = method => {
           .withMessage('not-correct-trip-article-length'),
         body('startDate')
           .if(value => !!value)
+          .if(body('endDate').exists())
           .custom(validationDateFutureTrip)
           .withMessage('not-correct-trip-start-date'),
         body('endDate')
           .if(value => !!value)
+          .if(body('startDate').exists())
           .custom(validationDateFutureTrip)
           .withMessage('not-correct-trip-end-date')
       ];
