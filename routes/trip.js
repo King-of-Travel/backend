@@ -75,7 +75,7 @@ router.post(
         private
       })
       .then(({ id }) => res.status(201).json(id))
-      .catch(next);
+      .catch(error => errorHandler(error, 400, res, next));
   }
 );
 
@@ -113,7 +113,7 @@ router.post('/past', auth, validation('createPastTrip'), (req, res, next) => {
       private
     })
     .then(({ id }) => res.status(201).json(id))
-    .catch(next);
+    .catch(error => errorHandler(error, 400, res, next));
 });
 
 module.exports = router;

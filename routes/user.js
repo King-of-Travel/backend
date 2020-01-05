@@ -23,8 +23,7 @@ router.post('/', validation('createUser'), (req, res, next) => {
   models.user
     .create({ email, password, username })
     .then(() => res.sendStatus(201))
-    .catch(error => errorHandler(error, 403, res, next))
-    .catch(next);
+    .catch(error => errorHandler(error, 400, res, next));
 });
 
 module.exports = router;

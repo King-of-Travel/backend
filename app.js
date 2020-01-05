@@ -57,8 +57,6 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  isDevelopment && console.warn('TCL: err', err);
-
   res.status(err.status || 500);
 
   res.json({ errors: { message: err.message } });
