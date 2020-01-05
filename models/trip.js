@@ -1,5 +1,22 @@
 const nanoid = require('nanoid');
 
+const AllCountries = require('./countries/en.json');
+
+function validationCountriesName(value) {
+  return AllCountries.find(country => country.code === value);
+}
+
+function validationDateFutureTrip(value) {
+  if (isNaN(Date.parse(value))) return false;
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  if (value < yesterday) return false;
+
+  return true;
+}
+
 module.exports = (sequelize, DataTypes) => {
   const user = sequelize.define(
     'trip',
@@ -17,22 +34,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(150),
         allowNull: true,
         validate: {
-          max: {
-            args: 150,
-            msg: 'not-correct-trip-title-length'
+          len: {
+            args: [0, 150],
+            msg: 'incorrect-trip-title-length'
+          },
+          is: {
+            args: ['[a-zA-Z0-9]+'],
+            msg: 'forbidden-symbols-title-trip'
           }
         }
       },
       countryCode: {
         type: DataTypes.STRING(2),
-        allowNull: false
-      },
-      article: {
-        type: DataTypes.STRING(2500),
+        allowNull: false,
         validate: {
-          max: {
-            args: 2500,
-            msg: 'not-correct-trip-article-length'
+          correctCode(code) {
+            const validate = validationCountriesName(code);
+
+            if (!validate) {
+              throw new Error('incorrect-trip-country-code');
+            }
           }
         }
       },
@@ -42,7 +63,16 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           len: {
             args: [2, 300],
-            msg: 'not-correct-trip-city-length'
+            msg: 'incorrect-trip-city-field-length'
+          }
+        }
+      },
+      article: {
+        type: DataTypes.STRING(2500),
+        validate: {
+          len: {
+            args: [0, 2500],
+            msg: 'incorrect-trip-article-length'
           }
         }
       },
@@ -51,10 +81,24 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: true
       },
       startDate: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: true,
+        validate: {
+          isDate: {
+            args: true,
+            msg: 'incorrect-start-date-trip-field'
+          }
+        }
       },
       endDate: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: true,
+        validate: {
+          isDate: {
+            args: true,
+            msg: 'incorrect-end-date-trip-field'
+          }
+        }
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE

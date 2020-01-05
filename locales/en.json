@@ -2,8 +2,10 @@
   "no-email-field": "Email is required",
   "not-email": "The email must be in the format: example@example.com",
   "not-unique-email": "Account with this e-mail is already registered",
+
   "no-password-field": "Password is required",
   "incorrect-password-field-length": "Password must be between 6 and 64 characters",
+
   "no-username-field": "Username is required",
   "incorrect-length-username-length": "Username must be between 4 and 30 characters",
   "incorrect-username-or-email-field-length": "Username must be between 4 and 30 characters or enter an e-mail in the following format: example@example.com",
@@ -11,12 +13,24 @@
   "not-unique-username": "Username is not available",
   "no-username-password": "You must specify username(e-mail) and password",
   "incorrect-username-password": "Incorrect username(e-mail) or password",
-  "user-not-logged": "You must be logged in",
-  "not-correct-trip-title-length": "The title of your travel article should not be longer than 150 characters",
-  "not-correct-trip-country-code": "Invalid country code",
-  "not-correct-trip-city-length": "City name must be between 2 and 300 characters",
-  "not-correct-trip-start-date": "Invalid start date",
-  "not-correct-trip-end-date": "Invalid end date",
-  "not-correct-trip-article-length": "Trip article should not be longer than 2500 characters",
-  "trip-not-found": "Trip not found"
+
+  "incorrect-trip-title-length": "The title of your travel article should not be longer than 150 characters",
+  "forbidden-symbols-title-trip": "The title should only contain letters and numbers",
+
+  "no-country-code-field": "Country is required",
+  "incorrect-trip-country-code": "Invalid country code",
+
+  "no-city-field": "City is required",
+  "incorrect-trip-city-field-length": "City name must be between 2 and 300 characters",
+
+  "no-start-date-field": "Start date is required",
+  "no-end-date-field": "End date is required",
+  "incorrect-start-date-trip-field": "Invalid start date",
+  "incorrect-end-date-trip-field": "Invalid end date",
+
+  "incorrect-trip-article-length": "Trip article should not be longer than 2500 characters",
+
+  "trip-not-found": "Trip not found",
+
+  "user-not-logged": "You must be logged in"
 }

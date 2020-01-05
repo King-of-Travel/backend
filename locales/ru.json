@@ -2,8 +2,10 @@
   "no-email-field": "Email обязателен к заполнению",
   "not-email": "Email должен соответствовать формату: example@example.com",
   "not-unique-email": "Аккаунт с данным e-mail уже зарегистрирован",
+
   "no-password-field": "Пароль обязателен к заполнению",
   "incorrect-password-field-length": "Пароль должен быть от 6 до 64 символов",
+
   "no-username-field": "Имя пользователя обязательно к заполнению",
   "incorrect-length-username-length": "Имя пользователя должно быть от 4 до 30 символов",
   "incorrect-username-or-email-field-length": "Имя пользователя должно быть от 4 до 30 символов или введите адрес электронной почты в следующем формате: example@example.com",
@@ -11,12 +13,24 @@
   "not-unique-username": "Имя пользователя не доступно",
   "no-username-password": "Необходимо указать имя пользователя(e-mail) и пароль",
   "incorrect-username-password": "Неправильное имя пользователя(e-mail) или пароль",
-  "user-not-logged": "Вы должны быть авторизованы",
-  "not-correct-trip-title-length": "Заголовок вашей статьи о поездке не должен быть длиннее 150 символов",
-  "not-correct-trip-country-code": "Некорректный код страны",
-  "not-correct-trip-city-length": "Название города должно быть от 2 до 300 символов",
-  "not-correct-trip-start-date": "Неккоректная дата начала поездки",
-  "not-correct-trip-end-date": "Неккоректная дата окончания поездки",
-  "not-correct-trip-article-length": "Длина статьи о поездке не должна быть длиннее 2500 символов",
-  "trip-not-found": "Поездка не найдена"
+
+  "incorrect-trip-title-length": "Заголовок вашей статьи о поездке не должен быть длиннее 150 символов",
+  "forbidden-symbols-title-trip": "Заголовок должен состоять только из букв и цифр",
+
+  "no-country-code-field": "Страна обязательна к заполнению",
+  "incorrect-trip-country-code": "Некорректный код страны",
+
+  "no-city-field": "Город обязателен к заполнению",
+  "incorrect-trip-city-field-length": "Название города должно быть от 2 до 300 символов",
+
+  "no-start-date-field": "Дата начала поездки обязательна",
+  "no-end-date-field": "Дата окончания поездки обязательна",
+  "incorrect-start-date-trip-field": "Неккоректная дата начала поездки",
+  "incorrect-end-date-trip-field": "Неккоректная дата окончания поездки",
+
+  "incorrect-trip-article-length": "Длина статьи о поездке не должна быть длиннее 2500 символов",
+
+  "trip-not-found": "Поездка не найдена",
+
+  "user-not-logged": "Вы должны быть авторизованы"
 }
