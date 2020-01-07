@@ -43,7 +43,7 @@ module.exports = method => {
           .trim()
       ];
 
-    case 'createFutureTrip':
+    case 'createTrip':
       return [
         body('title').trim(),
         body('countryCode', 'no-country-code-field')
@@ -52,30 +52,6 @@ module.exports = method => {
         body('city', 'no-city-field')
           .notEmpty()
           .trim(),
-        body('startDate')
-          .trim()
-          .custom(validationDateFutureTrip)
-          .withMessage('incorrect-start-date-trip-field')
-          .exists()
-          .withMessage('no-start-date-field'),
-        body('endDate')
-          .trim()
-          .custom(validationDateFutureTrip)
-          .withMessage('incorrect-end-date-trip-field')
-          .exists()
-          .withMessage('no-end-date-field')
-      ];
-
-    case 'createPastTrip':
-      return [
-        body('title').trim(),
-        body('countryCode', 'no-country-code-field')
-          .notEmpty()
-          .trim(),
-        body('city', 'no-city-field')
-          .notEmpty()
-          .trim(),
-        body('article').trim(),
         body('startDate')
           .if(body('endDate').notEmpty())
           .notEmpty()
@@ -85,8 +61,7 @@ module.exports = method => {
           .if(body('startDate').notEmpty())
           .notEmpty()
           .withMessage('no-end-date-field')
-          .trim(),
-        body('private').exists()
+          .trim()
       ];
     default:
       break;
