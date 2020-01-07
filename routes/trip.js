@@ -13,37 +13,43 @@ const router = express.Router();
  * Getting Trip Articles
  * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#e944b0b0-b7f9-4c86-a284-0918df736035
  */
-router.get('/article/:idTrip', (req, res, next) => {
+router.get('/article/:idTrip', async (req, res, next) => {
   const { idTrip } = req.params;
 
-  models.trip
-    .findOne({
-      where: { id: idTrip },
-      attributes: [
-        'id',
-        'author',
-        'title',
-        'countryCode',
-        'article',
-        'city',
-        'startDate',
-        'endDate',
-        'createdAt',
-        'private'
-      ]
-    })
-    .then(trip => {
-      if (!trip || trip.article === null || trip.private)
-        return next(createError(404));
+  const trip = await models.trip.findOne({
+    where: { id: idTrip },
+    attributes: [
+      'author',
+      'title',
+      'countryCode',
+      'article',
+      'city',
+      'startDate',
+      'endDate',
+      'createdAt',
+      'private'
+    ]
+  });
 
-      // Need to return user username
-      models.user
-        .findOne({ where: { id: trip.author }, attributes: ['username'] })
-        .then(author => {
-          res.status(200).json({ ...trip.dataValues, author: author.username });
-        })
-        .catch(next);
-    });
+  if (!trip || !trip.article) return next(createError(404));
+
+  const authorUsername = await models.user
+    .findOne({ where: { id: trip.author }, attributes: ['username'] })
+    .then(author => author.username);
+
+  const usernameRequest =
+    (req.session.user && req.session.user.username) || null;
+
+  const dateTrip = {
+    ...trip.dataValues,
+    author: authorUsername
+  };
+
+  if (authorUsername === usernameRequest || !trip.private) {
+    return res.status(200).json(dateTrip);
+  }
+
+  return next(createError(404));
 });
 
 /*
@@ -63,6 +69,7 @@ router.post(
 
     const { title, countryCode, city, startDate, endDate, private } = req.body;
     const { email } = req.session.user;
+    console.log('TCL: email', email);
 
     models.trip
       .create({
