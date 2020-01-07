@@ -34,7 +34,11 @@ router.post('/', validation('createSession'), (req, res, next) => {
         return next(createError(404, res.__('incorrect-username-password')));
       }
 
-      const userResponse = { email: user.email, username: user.username };
+      const userResponse = {
+        id: user.id,
+        email: user.email,
+        username: user.username
+      };
 
       req.session.user = userResponse;
       res.status(201).json(userResponse);
