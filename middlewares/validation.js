@@ -63,6 +63,30 @@ module.exports = method => {
           .withMessage('no-end-date-field')
           .trim()
       ];
+
+    case 'checkSignupUsername':
+      return [
+        body('value')
+          .trim()
+          .isLength({ min: 4, max: 30 })
+          .withMessage('incorrect-length-username-length')
+          .matches('^[a-zA-Z0-9]+$')
+          .withMessage('forbidden-symbols-username')
+      ];
+    case 'checkSignupEmail':
+      return [
+        body('value')
+          .trim()
+          .isEmail()
+          .withMessage('not-email')
+      ];
+    case 'checkSignupPassword':
+      return [
+        body('value')
+          .trim()
+          .isLength({ min: 6, max: 64 })
+          .withMessage('incorrect-password-field-length')
+      ];
     default:
       break;
   }
