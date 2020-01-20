@@ -14,9 +14,6 @@
   "no-username-password": "Необходимо указать имя пользователя(e-mail) и пароль",
   "incorrect-username-password": "Неправильное имя пользователя(e-mail) или пароль",
 
-  "incorrect-trip-title-length": "Заголовок вашей статьи о поездке не должен быть длиннее 150 символов",
-  "forbidden-symbols-title-trip": "Заголовок должен состоять только из букв и цифр",
-
   "no-country-code-field": "Страна обязательна к заполнению",
   "incorrect-trip-country-code": "Некорректный код страны",
 

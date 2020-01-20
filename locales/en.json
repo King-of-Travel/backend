@@ -14,9 +14,6 @@
   "no-username-password": "You must specify username(e-mail) and password",
   "incorrect-username-password": "Incorrect username(e-mail) or password",
 
-  "incorrect-trip-title-length": "The title of your travel article should not be longer than 150 characters",
-  "forbidden-symbols-title-trip": "The title should only contain letters and numbers",
-
   "no-country-code-field": "Country is required",
   "incorrect-trip-country-code": "Invalid country code",
 

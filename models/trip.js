@@ -15,20 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    title: {
-      type: DataTypes.STRING(150),
-      allowNull: true,
-      validate: {
-        len: {
-          args: [0, 150],
-          msg: 'incorrect-trip-title-length'
-        },
-        is: {
-          args: ['[a-zA-Z0-9]+'],
-          msg: 'forbidden-symbols-title-trip'
-        }
-      }
-    },
     countryCode: {
       type: DataTypes.STRING(2),
       allowNull: false,
