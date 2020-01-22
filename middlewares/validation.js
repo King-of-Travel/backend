@@ -45,7 +45,6 @@ module.exports = method => {
 
     case 'createTrip':
       return [
-        body('title').trim(),
         body('countryCode', 'no-country-code-field')
           .notEmpty()
           .trim(),
