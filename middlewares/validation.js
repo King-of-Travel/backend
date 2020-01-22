@@ -86,6 +86,13 @@ module.exports = method => {
           .isLength({ min: 6, max: 64 })
           .withMessage('incorrect-password-field-length')
       ];
+    case 'createOrEditArticle':
+      return [
+        body('title', 'no-article-title-field')
+          .notEmpty()
+          .trim(),
+        body('body', 'no-article-body-field').notEmpty()
+      ];
     default:
       break;
   }

@@ -29,5 +29,8 @@
 
   "trip-not-found": "Trip not found",
 
-  "user-not-logged": "You must be logged in"
+  "user-not-logged": "You must be logged in",
+
+  "no-article-title-field": "Title of the article is required",
+  "no-article-body-field": "Content of the article is required"
 }
