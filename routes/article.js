@@ -5,6 +5,7 @@ const auth = require('../middlewares/auth');
 const validation = require('../middlewares/validation');
 const errorHandler = require('../middlewares/error-handler');
 const models = require('../models');
+const { generateJsonToHTML } = require('../common/editor');
 
 const router = express.Router();
 
@@ -42,5 +43,45 @@ router.post(
     }
   }
 );
+
+router.get('/', async (req, res, next) => {
+  try {
+    let validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      throw validationErrors.errors;
+    }
+
+    let { id } = req.query;
+
+    let foundArticle = await models.article.findOne({
+      where: { id },
+      attributes: [
+        'user',
+        'title',
+        'body',
+        'countryCode',
+        'city',
+        'createdAt',
+        'updatedAt'
+      ]
+    });
+
+    if (!foundArticle) throw 'not-found';
+
+    foundArticle.body = foundArticle.body.map(generateJsonToHTML).join('');
+
+    let authorUsername = await models.user.findOne({
+      where: { id: foundArticle.user },
+      attributes: ['username']
+    });
+
+    foundArticle.user = authorUsername.username;
+
+    res.json(foundArticle);
+  } catch (error) {
+    errorHandler(error, 400, res, next);
+  }
+});
 
 module.exports = router;
