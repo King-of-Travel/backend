@@ -68,7 +68,6 @@ router.get('/', async (req, res, next) => {
     });
 
     if (!foundArticle) throw 'not-found';
-
     foundArticle.body = foundArticle.body.map(generateJsonToHTML).join('');
 
     let authorUsername = await models.user.findOne({
