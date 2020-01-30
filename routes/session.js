@@ -5,6 +5,7 @@ const { Op } = require('sequelize');
 
 const errorHandler = require('../middlewares/error-handler');
 const validation = require('../middlewares/validation');
+const auth = require('../middlewares/auth');
 
 const models = require('../models');
 
@@ -44,6 +45,22 @@ router.post('/', validation('createSession'), (req, res, next) => {
       res.status(201).json(userResponse);
     })
     .catch(next);
+});
+
+router.delete('/', auth, async (req, res, next) => {
+  try {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      throw validationErrors.errors;
+    }
+
+    await req.session.destroy();
+
+    res.sendStatus(200);
+  } catch (error) {
+    errorHandler(error, 401, res, next);
+  }
 });
 
 module.exports = router;
