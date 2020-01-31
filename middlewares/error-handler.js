@@ -27,6 +27,10 @@ function errorHandler(errorModel, statusCode, res, next) {
     return res.status(statusCode).send({ errors });
   }
 
+  if (typeof errorModel === 'string') {
+    return res.status(statusCode).send(res.__(errorModel));
+  }
+
   return next(errorModel);
 }
 

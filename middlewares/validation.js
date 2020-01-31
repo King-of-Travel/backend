@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+const { body, query } = require('express-validator');
 
 function validationDateFutureTrip(value) {
   if (isNaN(Date.parse(value))) return false;
@@ -41,6 +41,15 @@ module.exports = method => {
         body('username', 'no-username-field')
           .notEmpty()
           .trim()
+      ];
+    case 'getUser':
+      return [
+        query('username')
+          .trim()
+          .isLength({ min: 4, max: 30 })
+          .withMessage('incorrect-length-username-length')
+          .matches('^[a-zA-Z0-9]+$')
+          .withMessage('forbidden-symbols-username')
       ];
 
     case 'createTrip':
