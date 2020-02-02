@@ -32,5 +32,9 @@
   "user-not-logged": "Вы должны быть авторизованы",
 
   "no-article-title-field": "Заголовок статьи обязателен к заполнению",
-  "no-article-body-field": "Отсутствуект содержимое статьи"
+  "no-article-body-field": "Отсутствуект содержимое статьи",
+
+  "incorrect-get-user-articles-userId-field": "Id пользователя должно состоять только из одного числа",
+  "incorrect-get-user-articles-offset-field": "Поле смещения относительно прошлых статей должно содержать только одно число",
+  "The article limit field must contain only one number": "Поле лимита статей должно содержать только одно число"
 }

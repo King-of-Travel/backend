@@ -32,5 +32,9 @@
   "user-not-logged": "You must be logged in",
 
   "no-article-title-field": "Title of the article is required",
-  "no-article-body-field": "Content of the article is required"
+  "no-article-body-field": "Content of the article is required",
+
+  "incorrect-get-user-articles-userId-field": "User id field must contain only one number",
+  "incorrect-get-user-articles-offset-field": "The offset field must contain only one number",
+  "incorrect-get-user-articles-limit-field": "The article limit field must contain only one number"
 }

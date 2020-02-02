@@ -49,7 +49,7 @@ router.get('/', validation('getUser'), async (req, res, next) => {
 
     let foundUser = await models.user.findOne({
       where: { username },
-      attributes: ['username', 'createdAt']
+      attributes: ['id', 'username', 'createdAt']
     });
 
     if (!foundUser) throw 'not-found';
@@ -59,5 +59,37 @@ router.get('/', validation('getUser'), async (req, res, next) => {
     errorHandler(error, 404, res, next);
   }
 });
+
+/*
+ * Get user articles by user ID
+ * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#6a0094fc-df88-4b49-b4b9-2fc89e769009
+ */
+router.get(
+  '/articles',
+  validation('getUserArticles'),
+  async (req, res, next) => {
+    try {
+      let validationErrors = validationResult(req);
+
+      if (!validationErrors.isEmpty()) {
+        throw validationErrors.errors;
+      }
+
+      let { userId, limit = 20, offset = 0 } = req.query;
+
+      let foundArticles = await models.article.findAndCountAll({
+        where: { user: userId },
+        attributes: ['id', 'title', 'countryCode', 'city', 'createdAt'],
+        order: [['createdAt', 'DESC']],
+        limit,
+        offset
+      });
+
+      res.json({ count: foundArticles.count, list: foundArticles.rows });
+    } catch (error) {
+      errorHandler(error, 404, res, next);
+    }
+  }
+);
 
 module.exports = router;

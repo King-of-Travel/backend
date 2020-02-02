@@ -1,18 +1,5 @@
 const { body, query } = require('express-validator');
 
-function validationDateFutureTrip(value) {
-  if (isNaN(Date.parse(value))) return false;
-
-  const userDate = new Date(value);
-  const yesterday = new Date();
-
-  yesterday.setDate(yesterday.getDate() - 1);
-
-  if (userDate < yesterday) return false;
-
-  return true;
-}
-
 module.exports = method => {
   switch (method) {
     case 'createSession':
@@ -101,6 +88,20 @@ module.exports = method => {
           .notEmpty()
           .trim(),
         body('body', 'no-article-body-field').notEmpty()
+      ];
+    case 'getUserArticles':
+      return [
+        query('userId')
+          .isNumeric()
+          .withMessage('incorrect-get-user-articles-userId-field'),
+        query('offset')
+          .if(value => value.length)
+          .isNumeric()
+          .withMessage('incorrect-get-user-articles-offset-field'),
+        query('limit')
+          .if(value => value.length)
+          .isNumeric()
+          .withMessage('incorrect-get-user-articles-limit-field')
       ];
     default:
       break;
