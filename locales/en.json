@@ -36,5 +36,7 @@
 
   "incorrect-get-user-articles-userId-field": "User id field must contain only one number",
   "incorrect-get-user-articles-offset-field": "The offset field must contain only one number",
-  "incorrect-get-user-articles-limit-field": "The article limit field must contain only one number"
+  "incorrect-get-user-articles-limit-field": "The article limit field must contain only one number",
+
+  "article-not-found": "Article not found"
 }

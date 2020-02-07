@@ -57,6 +57,7 @@ router.get('/', async (req, res, next) => {
     let foundArticle = await models.article.findOne({
       where: { id },
       attributes: [
+        'id',
         'user',
         'title',
         'body',
@@ -64,10 +65,12 @@ router.get('/', async (req, res, next) => {
         'city',
         'createdAt',
         'updatedAt'
-      ]
+      ],
+      raw: true
     });
 
     if (!foundArticle) throw 'not-found';
+
     foundArticle.body = foundArticle.body.map(generateJsonToHTML).join('');
 
     let authorUsername = await models.user.findOne({
@@ -77,7 +80,71 @@ router.get('/', async (req, res, next) => {
 
     foundArticle.user = authorUsername.username;
 
+    let foundLikes = await models.articleLikes.findAndCountAll({
+      where: { idArticle: id },
+      raw: true
+    });
+
+    let user = req.session && req.session.user;
+
+    let currentUserRating = null;
+
+    await foundLikes.rows.find(like => {
+      if (!user) return false;
+
+      if (like.idUser === user.id) {
+        currentUserRating = true;
+        return true;
+      }
+    });
+
+    foundArticle.likes = {
+      count: foundLikes.count,
+      currentUserRating
+    };
+
     res.json(foundArticle);
+  } catch (error) {
+    errorHandler(error, 400, res, next);
+  }
+});
+
+/*
+ * Put or remove like
+ * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#a946dce2-bdee-433c-948e-cf5765a6db25
+ */
+router.put('/like', auth, async (req, res, next) => {
+  try {
+    let validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      throw validationErrors.errors;
+    }
+
+    let { idArticle } = req.query;
+    let user = req.session.user;
+
+    let foundArticle = await models.article.findOne({
+      where: { id: idArticle }
+    });
+
+    if (!foundArticle) throw 'article-not-found';
+
+    let findOrCreate = await models.articleLikes.findOrCreate({
+      where: { idArticle, idUser: user.id }
+    });
+
+    // If the user has liked, then a request to delete it
+    if (!findOrCreate[1]) {
+      await models.articleLikes.destroy({
+        where: {
+          idArticle,
+          idUser: user.id
+        }
+      });
+    }
+
+    res.sendStatus(200);
   } catch (error) {
     errorHandler(error, 400, res, next);
   }
