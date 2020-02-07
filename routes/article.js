@@ -44,6 +44,10 @@ router.post(
   }
 );
 
+/*
+ * Get article
+ * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#80fa3b97-f74d-4960-bf32-a967cfa884a4
+ */
 router.get('/', async (req, res, next) => {
   try {
     let validationErrors = validationResult(req);
