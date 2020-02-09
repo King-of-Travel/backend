@@ -27,10 +27,10 @@ router.post(
 
       const { title, body, countryCode, city } = req.body;
 
-      const authorId = req.session.user.id;
+      const userId = req.session.user.id;
 
       let newAritcle = await models.article.create({
-        user: authorId,
+        userId,
         title,
         body,
         countryCode,
@@ -62,7 +62,6 @@ router.get('/', async (req, res, next) => {
       where: { id },
       attributes: [
         'id',
-        'user',
         'title',
         'body',
         'countryCode',
@@ -70,42 +69,39 @@ router.get('/', async (req, res, next) => {
         'createdAt',
         'updatedAt'
       ],
-      raw: true
+      include: [
+        { model: models.user, attributes: ['id', 'username'] },
+        {
+          model: models.articleLikes,
+          as: 'likes',
+          attributes: ['userId']
+        }
+      ]
     });
 
     if (!foundArticle) throw 'not-found';
 
-    foundArticle.body = foundArticle.body.map(generateJsonToHTML).join('');
-
-    let authorUsername = await models.user.findOne({
-      where: { id: foundArticle.user },
-      attributes: ['username']
-    });
-
-    foundArticle.user = authorUsername.username;
-
-    let foundLikes = await models.articleLikes.findAndCountAll({
-      where: { idArticle: id },
-      raw: true
-    });
-
     let user = req.session && req.session.user;
-
     let currentUserRating = null;
 
-    await foundLikes.rows.find(like => {
+    // Determine if the user who made the request is like
+    await foundArticle.likes.find(like => {
       if (!user) return false;
 
-      if (like.idUser === user.id) {
+      if (like.userId === user.id) {
         currentUserRating = true;
         return true;
       }
     });
 
-    foundArticle.likes = {
-      count: foundLikes.count,
+    foundArticle.dataValues.likes = {
+      count: foundArticle.likes.length,
       currentUserRating
     };
+
+    foundArticle.dataValues.body = foundArticle.body
+      .map(generateJsonToHTML)
+      .join('');
 
     res.json(foundArticle);
   } catch (error) {
@@ -125,25 +121,25 @@ router.put('/like', auth, async (req, res, next) => {
       throw validationErrors.errors;
     }
 
-    let { idArticle } = req.query;
+    let { articleId } = req.query;
     let user = req.session.user;
 
     let foundArticle = await models.article.findOne({
-      where: { id: idArticle }
+      where: { id: articleId }
     });
 
     if (!foundArticle) throw 'article-not-found';
 
     let findOrCreate = await models.articleLikes.findOrCreate({
-      where: { idArticle, idUser: user.id }
+      where: { articleId, userId: user.id }
     });
 
     // If the user has liked, then a request to delete it
     if (!findOrCreate[1]) {
       await models.articleLikes.destroy({
         where: {
-          idArticle,
-          idUser: user.id
+          articleId,
+          userId: user.id
         }
       });
     }

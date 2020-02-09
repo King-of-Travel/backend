@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: () => nanoid(7)
     },
-    user: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },

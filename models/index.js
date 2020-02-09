@@ -39,4 +39,14 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.user.hasMany(db.article, { as: 'articles' });
+db.user.hasMany(db.trip, { as: 'trips' });
+
+db.article.hasMany(db.articleLikes, { as: 'likes' });
+db.article.belongsTo(db.user);
+
+db.articleLikes.belongsTo(db.article);
+
+db.trip.belongsTo(db.user);
+
 module.exports = db;

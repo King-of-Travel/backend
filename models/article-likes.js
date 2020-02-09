@@ -1,10 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
   const articleLikes = sequelize.define('articleLikes', {
-    idUser: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    idArticle: {
+    articleId: {
       type: DataTypes.STRING(7),
       allowNull: false
     },

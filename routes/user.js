@@ -78,7 +78,7 @@ router.get(
       let { userId, limit = 20, offset = 0 } = req.query;
 
       let foundArticles = await models.article.findAndCountAll({
-        where: { user: userId },
+        where: { userId },
         attributes: ['id', 'title', 'countryCode', 'city', 'createdAt'],
         order: [['createdAt', 'DESC']],
         limit,

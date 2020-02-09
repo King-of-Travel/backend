@@ -21,10 +21,11 @@ router.post('/', auth, validation('createTrip'), async (req, res, next) => {
     }
 
     const { countryCode, city, startDate, endDate } = req.body;
-    const { id } = req.session.user;
+
+    const userId = req.session.user.id;
 
     await models.trip.create({
-      user: id,
+      userId,
       countryCode,
       city,
       startDate,
