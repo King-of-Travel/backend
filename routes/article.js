@@ -16,7 +16,7 @@ const router = express.Router();
 router.post(
   '/',
   auth,
-  validation('createOrEditArticle'),
+  validation('create-edit/article'),
   async (req, res, next) => {
     try {
       const validationErrors = validationResult(req);
@@ -48,7 +48,7 @@ router.post(
  * Get article
  * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#80fa3b97-f74d-4960-bf32-a967cfa884a4
  */
-router.get('/', async (req, res, next) => {
+router.get('/', validation('get/article'), async (req, res, next) => {
   try {
     let validationErrors = validationResult(req);
 
@@ -79,7 +79,7 @@ router.get('/', async (req, res, next) => {
       ]
     });
 
-    if (!foundArticle) throw 'not-found';
+    if (!foundArticle) throw 'article-not-found';
 
     let user = req.session && req.session.user;
     let currentUserRating = null;
@@ -113,41 +113,46 @@ router.get('/', async (req, res, next) => {
  * Put or remove like
  * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#a946dce2-bdee-433c-948e-cf5765a6db25
  */
-router.put('/like', auth, async (req, res, next) => {
-  try {
-    let validationErrors = validationResult(req);
+router.put(
+  '/like',
+  validation('put-remove-like/article'),
+  auth,
+  async (req, res, next) => {
+    try {
+      let validationErrors = validationResult(req);
 
-    if (!validationErrors.isEmpty()) {
-      throw validationErrors.errors;
-    }
+      if (!validationErrors.isEmpty()) {
+        throw validationErrors.errors;
+      }
 
-    let { articleId } = req.query;
-    let user = req.session.user;
+      let { articleId } = req.query;
+      let user = req.session.user;
 
-    let foundArticle = await models.article.findOne({
-      where: { id: articleId }
-    });
-
-    if (!foundArticle) throw 'article-not-found';
-
-    let findOrCreate = await models.articleLikes.findOrCreate({
-      where: { articleId, userId: user.id }
-    });
-
-    // If the user has liked, then a request to delete it
-    if (!findOrCreate[1]) {
-      await models.articleLikes.destroy({
-        where: {
-          articleId,
-          userId: user.id
-        }
+      let foundArticle = await models.article.findOne({
+        where: { id: articleId }
       });
-    }
 
-    res.sendStatus(200);
-  } catch (error) {
-    errorHandler(error, 400, res, next);
+      if (!foundArticle) throw 'article-not-found';
+
+      let findOrCreate = await models.articleLikes.findOrCreate({
+        where: { articleId, userId: user.id }
+      });
+
+      // If the user has liked, then a request to delete it
+      if (!findOrCreate[1]) {
+        await models.articleLikes.destroy({
+          where: {
+            articleId,
+            userId: user.id
+          }
+        });
+      }
+
+      res.sendStatus(200);
+    } catch (error) {
+      errorHandler(error, 400, res, next);
+    }
   }
-});
+);
 
 module.exports = router;

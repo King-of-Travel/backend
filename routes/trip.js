@@ -12,7 +12,7 @@ const router = express.Router();
  * Add trip
  * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#3f694889-32df-4b6c-902d-d5a91b036ee1
  */
-router.post('/', auth, validation('createTrip'), async (req, res, next) => {
+router.post('/', auth, validation('add/trip'), async (req, res, next) => {
   try {
     const validationErrors = validationResult(req);
 

@@ -11,7 +11,7 @@ const router = express.Router();
  * Create an account
  * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#f93a6969-8d9d-409e-a583-e549645c8223
  */
-router.post('/', validation('createUser'), async (req, res, next) => {
+router.post('/', validation('create/user'), async (req, res, next) => {
   try {
     let validationErrors = validationResult(req);
 
@@ -37,7 +37,7 @@ router.post('/', validation('createUser'), async (req, res, next) => {
  * Get user data
  * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#737b9a86-a9e0-4334-be7b-0e585ae072d9
  */
-router.get('/', validation('getUser'), async (req, res, next) => {
+router.get('/', validation('get/user'), async (req, res, next) => {
   try {
     let validationErrors = validationResult(req);
 
@@ -66,7 +66,7 @@ router.get('/', validation('getUser'), async (req, res, next) => {
  */
 router.get(
   '/articles',
-  validation('getUserArticles'),
+  validation('get-articles/user'),
   async (req, res, next) => {
     try {
       let validationErrors = validationResult(req);

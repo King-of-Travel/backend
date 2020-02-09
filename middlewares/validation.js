@@ -2,7 +2,7 @@ const { body, query } = require('express-validator');
 
 module.exports = method => {
   switch (method) {
-    case 'createSession':
+    case 'create/session':
       return [
         body('username', 'incorrect-username-or-email-field-length')
           .trim()
@@ -17,7 +17,7 @@ module.exports = method => {
             max: 64
           })
       ];
-    case 'createUser':
+    case 'create/user':
       return [
         body('email', 'no-email-field')
           .notEmpty()
@@ -29,7 +29,7 @@ module.exports = method => {
           .notEmpty()
           .trim()
       ];
-    case 'getUser':
+    case 'get/user':
       return [
         query('username')
           .trim()
@@ -39,7 +39,7 @@ module.exports = method => {
           .withMessage('forbidden-symbols-username')
       ];
 
-    case 'createTrip':
+    case 'add/trip':
       return [
         body('countryCode', 'no-country-code-field')
           .notEmpty()
@@ -59,7 +59,7 @@ module.exports = method => {
           .trim()
       ];
 
-    case 'checkSignupUsername':
+    case 'signup-username/check':
       return [
         body('value')
           .trim()
@@ -68,28 +68,28 @@ module.exports = method => {
           .matches('^[a-zA-Z0-9]+$')
           .withMessage('forbidden-symbols-username')
       ];
-    case 'checkSignupEmail':
+    case 'signup-email/check':
       return [
         body('value')
           .trim()
           .isEmail()
           .withMessage('not-email')
       ];
-    case 'checkSignupPassword':
+    case 'signup-password/check':
       return [
         body('value')
           .trim()
           .isLength({ min: 6, max: 64 })
           .withMessage('incorrect-password-field-length')
       ];
-    case 'createOrEditArticle':
+    case 'create-edit/article':
       return [
         body('title', 'no-article-title-field')
           .notEmpty()
           .trim(),
         body('body', 'no-article-body-field').notEmpty()
       ];
-    case 'getUserArticles':
+    case 'get-articles/user':
       return [
         query('userId')
           .isNumeric()
@@ -102,6 +102,22 @@ module.exports = method => {
           .if(value => value.length)
           .isNumeric()
           .withMessage('incorrect-get-user-articles-limit-field')
+      ];
+
+    case 'put-remove-like/article':
+      return [
+        query('articleId')
+          .trim()
+          .isLength({ min: 3, max: 7 })
+          .withMessage('incorrect-put-remove-like-articleId-field')
+      ];
+
+    case 'get/article':
+      return [
+        query('id')
+          .trim()
+          .isLength({ min: 3, max: 7 })
+          .withMessage('incorrect-get-article-id-field')
       ];
     default:
       break;

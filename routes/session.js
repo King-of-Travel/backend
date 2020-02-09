@@ -15,7 +15,7 @@ const router = express.Router();
  * Create session
  * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#7fa8317f-b1d0-45b0-9478-3077f7fd7e38
  */
-router.post('/', validation('createSession'), async (req, res, next) => {
+router.post('/', validation('create/session'), async (req, res, next) => {
   try {
     let validationErrors = validationResult(req);
 

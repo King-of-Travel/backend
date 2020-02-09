@@ -15,7 +15,7 @@ const upload = multer();
 router.post(
   '/signup/username',
   upload.none(),
-  validation('checkSignupUsername'),
+  validation('signup-username/check'),
   async (req, res) => {
     try {
       const validationErrors = validationResult(req);
@@ -44,7 +44,7 @@ router.post(
 router.post(
   '/signup/email',
   upload.none(),
-  validation('checkSignupEmail'),
+  validation('signup-email/check'),
   async (req, res) => {
     try {
       const validationErrors = validationResult(req);
@@ -73,7 +73,7 @@ router.post(
 router.post(
   '/signup/password',
   upload.none(),
-  validation('checkSignupPassword'),
+  validation('signup-password/check'),
   async (req, res) => {
     try {
       const validationErrors = validationResult(req);
