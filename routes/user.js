@@ -77,15 +77,36 @@ router.get(
 
       let { userId, limit = 20, offset = 0 } = req.query;
 
-      let foundArticles = await models.article.findAndCountAll({
-        where: { userId },
-        attributes: ['id', 'title', 'countryCode', 'city', 'createdAt'],
-        order: [['createdAt', 'DESC']],
-        limit,
-        offset
-      });
+      let foundArticles = await models.sequelize.query(
+        `
+          SELECT    Count("likes"."articleId") AS "likes", 
+                  "article"."id"             AS "id", 
+                  "article"."title"          AS "title", 
+                  "article"."countryCode"    AS "countryCode", 
+                  "article"."city"           AS "city", 
+                  "article"."createdAt"      AS "createdAt" 
+          FROM      "articles"                 AS "article" 
+          LEFT JOIN "articleLikes"             AS "likes" 
+          ON        "article"."id" = "likes"."articleId" 
+          WHERE     "article"."userId" = ${userId} 
+          GROUP BY  "article"."id" 
+          ORDER BY  "createdAt" DESC
+        `,
+        {
+          type: models.sequelize.QueryTypes.SELECT
+        }
+      );
 
-      res.json({ count: foundArticles.count, list: foundArticles.rows });
+      let countArticles = await models.sequelize.query(
+        `
+          SELECT Count(*) 
+          FROM   "articles" 
+          WHERE  "articles"."userId" = ${userId}
+        `,
+        { type: models.sequelize.QueryTypes.SELECT }
+      );
+
+      res.json({ list: foundArticles, count: countArticles[0].count });
     } catch (error) {
       errorHandler(error, 404, res, next);
     }
