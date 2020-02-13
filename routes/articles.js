@@ -36,6 +36,10 @@ router.get('/popular', async (req, res, next) => {
       date = date.setMonth(date.getMonth() - 1);
     }
 
+    if (period === 'year') {
+      date = date.setFullYear(date.getFullYear() - 1);
+    }
+
     date = new Date(date).toLocaleDateString();
 
     let foundArticles = await models.sequelize
