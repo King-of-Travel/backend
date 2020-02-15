@@ -90,23 +90,14 @@ router.get(
           ON        "article"."id" = "likes"."articleId" 
           WHERE     "article"."userId" = ${userId} 
           GROUP BY  "article"."id" 
-          ORDER BY  "createdAt" DESC
+          ORDER BY  "createdAt" DESC limit ${limit} offset ${offset}
         `,
         {
           type: models.sequelize.QueryTypes.SELECT
         }
       );
 
-      let countArticles = await models.sequelize.query(
-        `
-          SELECT Count(*) 
-          FROM   "articles" 
-          WHERE  "articles"."userId" = ${userId}
-        `,
-        { type: models.sequelize.QueryTypes.SELECT }
-      );
-
-      res.json({ list: foundArticles, count: countArticles[0].count });
+      res.json(foundArticles);
     } catch (error) {
       errorHandler(error, 404, res, next);
     }

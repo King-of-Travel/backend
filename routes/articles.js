@@ -72,17 +72,45 @@ router.get('/popular', async (req, res, next) => {
         };
       });
 
-    let countArticles = await models.sequelize.query(
+    res.json(foundArticles);
+  } catch (error) {
+    errorHandler(error, 400, res, next);
+  }
+});
+
+router.get('/new', async (req, res, next) => {
+  try {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      throw validationErrors.errors;
+    }
+
+    let { limit = 20, offset = 0, top = 0 } = req.query;
+
+    let foundArticles = await models.sequelize.query(
       `
-        SELECT Count(*) 
-        FROM   "articleLikes" 
-        WHERE  "articleLikes"."createdAt" >= '${date}' 
-        GROUP  BY "articleId" 
+        SELECT    "title", 
+              "createdAt", 
+              "article"."id", 
+              "likes" 
+        FROM      articles AS "article" 
+        ${top >= 1 ? 'INNER' : 'LEFT'} JOIN 
+              ( 
+                      SELECT   Count(1)    AS "likes", 
+                                "articleId" AS id 
+                      FROM     "articleLikes" 
+                      GROUP BY "articleId" 
+                      HAVING   Count(1)>=${top}) AS "likes" 
+        ON        "likes"."id"= "article"."id" 
+        ORDER BY  "createdAt" DESC limit ${limit} offset ${offset}
       `,
-      { type: sequelize.QueryTypes.SELECT }
+      {
+        type: sequelize.QueryTypes.SELECT
+      }
     );
 
-    res.json({ list: foundArticles, count: countArticles.length });
+    res.json(foundArticles);
   } catch (error) {
     errorHandler(error, 400, res, next);
   }
