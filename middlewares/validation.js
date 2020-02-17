@@ -119,6 +119,30 @@ module.exports = method => {
           .isLength({ min: 3, max: 7 })
           .withMessage('incorrect-get-article-id-field')
       ];
+
+    case 'get-editing/article':
+      return [
+        query('id')
+          .trim()
+          .isLength({ min: 3, max: 7 })
+          .withMessage('incorrect-edit-article-id-field')
+      ];
+
+    case 'edit/article':
+      return [
+        query('id')
+          .trim()
+          .isLength({ min: 3, max: 7 })
+          .withMessage('incorrect-edit-article-id-field'),
+        body('title')
+          .trim()
+          .isLength({ min: 3, max: 120 })
+          .withMessage('incorrect-edit-article-title-field'),
+        body('body')
+          .isArray()
+          .withMessage('incorrect-edit-article-body-field')
+      ];
+
     default:
       break;
   }

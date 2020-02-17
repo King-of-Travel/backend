@@ -155,4 +155,72 @@ router.put(
   }
 );
 
+/*
+ * Get an article to edit
+ * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#83e33098-f823-4656-8184-3d1441859b64
+ */
+router.get(
+  '/edit',
+  auth,
+  validation('get-editing/article'),
+  async (req, res, next) => {
+    try {
+      let validationErrors = validationResult(req);
+
+      if (!validationErrors.isEmpty()) {
+        throw validationErrors.errors;
+      }
+
+      let { id } = req.query;
+      let user = req.session.user;
+
+      let foundArticle = await models.article.findOne({
+        where: { id, userId: user.id },
+        attributes: ['id', 'title', 'body', 'countryCode', 'city'],
+        raw: true
+      });
+
+      if (!foundArticle) throw 'article-not-found';
+
+      res.json(foundArticle);
+    } catch (error) {
+      errorHandler(error, 404, res, next);
+    }
+  }
+);
+
+/*
+ * Edit article
+ * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#7a9975c4-90cc-4b70-968a-e7397c151e28
+ */
+router.post(
+  '/edit',
+  auth,
+  validation('edit/article'),
+  async (req, res, next) => {
+    try {
+      let validationErrors = validationResult(req);
+
+      if (!validationErrors.isEmpty()) {
+        throw validationErrors.errors;
+      }
+
+      let { id } = req.query;
+      let article = req.body;
+      let user = req.session.user;
+
+      let editArticle = await models.article.update(article, {
+        where: { id, userId: user.id },
+        raw: true
+      });
+
+      if (!editArticle[0]) throw 'article-not-found';
+
+      res.sendStatus(200);
+    } catch (error) {
+      errorHandler(error, 404, res, next);
+    }
+  }
+);
+
 module.exports = router;

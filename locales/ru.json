@@ -33,6 +33,9 @@
 
   "no-article-title-field": "Заголовок статьи обязателен к заполнению",
   "no-article-body-field": "Отсутствуект содержимое статьи",
+  "incorrect-edit-article-id-field": "ID статьи в запросе должен быть от 3 до 7 символов",
+  "incorrect-edit-article-title-field": "Длина заголовка должна быть от 3 до 120 символов",
+  "incorrect-edit-article-body-field": "Содержимое статьи должно состоять из массива",
 
   "incorrect-get-user-articles-userId-field": "Id пользователя должно состоять только из одного числа",
   "incorrect-get-user-articles-offset-field": "Поле смещения относительно прошлых статей должно содержать только одно число",

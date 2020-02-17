@@ -33,6 +33,9 @@
 
   "no-article-title-field": "Title of the article is required",
   "no-article-body-field": "Content of the article is required",
+  "incorrect-edit-article-id-field": "The article id in the request should be from 3 to 7 characters",
+  "incorrect-edit-article-title-field": "The length of the title should be from 3 to 120 characters",
+  "incorrect-edit-article-body-field": "The content of the article should consist of an array",
 
   "incorrect-get-user-articles-userId-field": "User id field must contain only one number",
   "incorrect-get-user-articles-offset-field": "The offset field must contain only one number",
