@@ -43,9 +43,12 @@ db.user.hasMany(db.article, { as: 'articles' });
 db.user.hasMany(db.trip, { as: 'trips' });
 
 db.article.hasMany(db.articleLikes, { as: 'likes' });
+db.article.hasMany(db.articleTags, { as: 'tags' });
 db.article.belongsTo(db.user);
 
 db.articleLikes.belongsTo(db.article);
+
+db.articleTags.belongsTo(db.article);
 
 db.trip.belongsTo(db.user);
 

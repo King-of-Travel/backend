@@ -25,7 +25,7 @@ router.post(
         throw validationErrors.errors;
       }
 
-      const { title, body, countryCode, city } = req.body;
+      const { title, body, countryCode, city, tags } = req.body;
 
       const userId = req.session.user.id;
 
@@ -36,6 +36,14 @@ router.post(
         countryCode,
         city
       });
+
+      if (tags.length >= 1) {
+        await models.articleTags.bulkCreate(
+          tags.map(tag => {
+            return { articleId: newAritcle.id, value: tag.value };
+          })
+        );
+      }
 
       res.status(201).send(newAritcle.id);
     } catch (error) {
@@ -75,6 +83,11 @@ router.get('/', validation('get/article'), async (req, res, next) => {
           model: models.articleLikes,
           as: 'likes',
           attributes: ['userId']
+        },
+        {
+          model: models.articleTags,
+          as: 'tags',
+          attributes: ['value']
         }
       ]
     });
@@ -177,7 +190,13 @@ router.get(
       let foundArticle = await models.article.findOne({
         where: { id, userId: user.id },
         attributes: ['id', 'title', 'body', 'countryCode', 'city'],
-        raw: true
+        include: [
+          {
+            model: models.articleTags,
+            as: 'tags',
+            attributes: ['value']
+          }
+        ]
       });
 
       if (!foundArticle) throw 'article-not-found';
@@ -206,15 +225,33 @@ router.post(
       }
 
       let { id } = req.query;
-      let article = req.body;
+      let { title, body, countryCode, city, tags } = req.body;
+
       let user = req.session.user;
 
-      let editArticle = await models.article.update(article, {
-        where: { id, userId: user.id },
-        raw: true
-      });
+      let editArticle = await models.article.update(
+        { title, body, countryCode, city },
+        {
+          where: { id, userId: user.id },
+          raw: true
+        }
+      );
 
       if (!editArticle[0]) throw 'article-not-found';
+
+      await models.articleTags.destroy({
+        where: {
+          articleId: id
+        }
+      });
+
+      if (tags && tags.length >= 1) {
+        await models.articleTags.bulkCreate(
+          tags.map(tag => {
+            return { articleId: id, value: tag.value };
+          })
+        );
+      }
 
       res.sendStatus(200);
     } catch (error) {
