@@ -37,7 +37,7 @@
   "incorrect-edit-article-title-field": "Длина заголовка должна быть от 3 до 120 символов",
   "incorrect-edit-article-body-field": "Содержимое статьи должно состоять из массива",
 
-  "incorrect-get-user-articles-userId-field": "Id пользователя должно состоять только из одного числа",
+  "incorrect-get-user-articles-userId-field": "ID пользователя должно состоять только из одного числа",
   "incorrect-get-user-articles-offset-field": "Поле смещения относительно прошлых статей должно содержать только одно число",
   "The article limit field must contain only one number": "Поле лимита статей должно содержать только одно число",
 
@@ -45,5 +45,9 @@
 
   "incorrect-put-remove-like-articleId-field": "ID статьи должен состоять из 7 символов",
 
-  "incorrect-get-article-id-field": "ID статьи должен состоять из 7 символов"
+  "incorrect-get-article-id-field": "ID статьи должен состоять из 7 символов",
+
+  "no-image-field-adding-image-article": "Отсутствует поле с изображением",
+  "incorrect-user-id-param-get-image-article": "ID пользователя должно состоять только из одного числа",
+  "incorrect-image-id-param-get-image-article": "ID изображения должно состоять из строки"
 }

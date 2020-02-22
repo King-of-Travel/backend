@@ -1,4 +1,7 @@
 const express = require('express');
+const multer = require('multer');
+const fs = require('fs');
+const nanoidNonSecure = require('nanoid/non-secure');
 const { validationResult } = require('express-validator');
 
 const auth = require('../middlewares/auth');
@@ -256,6 +259,81 @@ router.post(
       res.sendStatus(200);
     } catch (error) {
       errorHandler(error, 404, res, next);
+    }
+  }
+);
+
+/*
+ * Add image to article
+ * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#10aa912e-64c4-4add-ae9f-9d3d7b8d2a01
+ */
+
+let diskStoringArticleImage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    let userId = req.session.user.id;
+    let dir = `uploads/article/${userId}`;
+
+    fs.exists(dir, exist => {
+      if (exist) return cb(null, dir);
+
+      return fs.mkdir(dir, error => cb(error, dir));
+    });
+  },
+  filename: function(req, file, cb) {
+    cb(null, nanoidNonSecure(5) + '.png');
+  }
+});
+
+let uploadArticleImage = multer({
+  storage: diskStoringArticleImage
+});
+
+router.post(
+  '/image',
+  auth,
+  uploadArticleImage.single('image'),
+  async (req, res, next) => {
+    try {
+      let file = req.file;
+
+      if (!file) {
+        throw 'no-image-field-adding-image-article';
+      }
+
+      let userId = req.session.user.id;
+
+      res.json({
+        success: 1,
+        file: {
+          url: `/api/article/image/${userId}/${file.filename}`
+        }
+      });
+    } catch (error) {
+      errorHandler(error, 400, res, next);
+    }
+  }
+);
+
+/*
+ * Get article image
+ * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#48b47816-22ba-4256-a9b4-56bcb004268a
+ */
+router.get(
+  '/image/:userId/:imageId',
+  validation('get-image/article'),
+  async (req, res, next) => {
+    try {
+      let validationErrors = validationResult(req);
+
+      if (!validationErrors.isEmpty()) {
+        throw validationErrors.errors;
+      }
+
+      let { userId, imageId } = req.params;
+
+      res.sendFile(`uploads/article/${userId}/${imageId}`, { root: '.' });
+    } catch (error) {
+      errorHandler(error, 400, res, next);
     }
   }
 );

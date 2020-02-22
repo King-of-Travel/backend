@@ -1,4 +1,4 @@
-const { body, query } = require('express-validator');
+const { body, query, param } = require('express-validator');
 
 module.exports = method => {
   switch (method) {
@@ -141,6 +141,16 @@ module.exports = method => {
         body('body')
           .isArray()
           .withMessage('incorrect-edit-article-body-field')
+      ];
+
+    case 'get-image/article':
+      return [
+        param('userId')
+          .isNumeric()
+          .withMessage('incorrect-user-id-param-get-image-article'),
+        param('imageId')
+          .isString()
+          .withMessage('incorrect-image-id-param-get-image-article')
       ];
 
     default:

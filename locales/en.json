@@ -45,5 +45,9 @@
 
   "incorrect-put-remove-like-articleId-field": "The article id should be 7 characters long",
 
-  "incorrect-get-article-id-field": "The article id should be 7 characters long"
+  "incorrect-get-article-id-field": "The article id should be 7 characters long",
+
+  "no-image-field-adding-image-article": "Missing image field",
+  "incorrect-user-id-param-get-image-article": "User id field must contain only one number",
+  "incorrect-image-id-param-get-image-article": "Image id must consist of a string"
 }
