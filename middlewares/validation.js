@@ -17,6 +17,7 @@ module.exports = method => {
             max: 64
           })
       ];
+
     case 'create/user':
       return [
         body('email', 'no-email-field')
@@ -29,6 +30,7 @@ module.exports = method => {
           .notEmpty()
           .trim()
       ];
+
     case 'get/user':
       return [
         query('username')
@@ -68,6 +70,7 @@ module.exports = method => {
           .matches('^[a-zA-Z0-9]+$')
           .withMessage('forbidden-symbols-username')
       ];
+
     case 'signup-email/check':
       return [
         body('value')
@@ -75,6 +78,7 @@ module.exports = method => {
           .isEmail()
           .withMessage('not-email')
       ];
+
     case 'signup-password/check':
       return [
         body('value')
@@ -82,6 +86,7 @@ module.exports = method => {
           .isLength({ min: 6, max: 64 })
           .withMessage('incorrect-password-field-length')
       ];
+
     case 'create-edit/article':
       return [
         body('title', 'no-article-title-field')
@@ -89,6 +94,7 @@ module.exports = method => {
           .trim(),
         body('body', 'no-article-body-field').notEmpty()
       ];
+
     case 'get-articles/user':
       return [
         query('username')
@@ -97,6 +103,27 @@ module.exports = method => {
           .withMessage('incorrect-length-username-length')
           .matches('^[a-zA-Z0-9]+$')
           .withMessage('forbidden-symbols-username'),
+        query('offset')
+          .if(value => value.length)
+          .isNumeric()
+          .withMessage('incorrect-get-user-articles-offset-field'),
+        query('limit')
+          .if(value => value.length)
+          .isNumeric()
+          .withMessage('incorrect-get-user-articles-limit-field')
+      ];
+
+    case 'get-trips/user':
+      return [
+        query('username')
+          .trim()
+          .isLength({ min: 4, max: 30 })
+          .withMessage('incorrect-length-username-length')
+          .matches('^[a-zA-Z0-9]+$')
+          .withMessage('forbidden-symbols-username'),
+        query('time')
+          .trim()
+          .isIn(['past', 'present', 'future']),
         query('offset')
           .if(value => value.length)
           .isNumeric()

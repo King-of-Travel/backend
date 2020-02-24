@@ -110,4 +110,63 @@ router.get(
   }
 );
 
+/*
+ * Get user trips
+ * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#7d651adb-394a-41d8-befa-01bed5786a86
+ */
+router.get('/trips', validation('get-trips/user'), async (req, res, next) => {
+  try {
+    let validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      throw validationErrors.errors;
+    }
+
+    let { username, time = 'future', limit = 20, offset = 0 } = req.query;
+
+    let foundUser = await models.user.findOne({
+      where: { username },
+      attributes: ['id'],
+      raw: true
+    });
+
+    if (!foundUser) throw 'not-found';
+
+    let currentDate = new Date().toLocaleDateString();
+
+    if (time === 'past') {
+      time = `"endDate" < '${currentDate}'`;
+    }
+
+    if (time === 'present') {
+      time = `"startDate" < '${currentDate}' AND "endDate" > '${currentDate}'`;
+    }
+
+    if (time === 'future') {
+      time = `"startDate" > '${currentDate}'`;
+    }
+
+    let foundTrips = await models.sequelize.query(
+      `
+          SELECT  "id",
+                  "countryCode", 
+                  "city", 
+                  "startDate", 
+                  "endDate", 
+                  "createdAt" 
+          FROM   "trips" 
+          WHERE  "userId" = ${foundUser.id} AND ${time}
+          ORDER BY "endDate" DESC limit ${limit} offset ${offset}
+        `,
+      {
+        type: models.sequelize.QueryTypes.SELECT
+      }
+    );
+
+    res.json(foundTrips);
+  } catch (error) {
+    errorHandler(error, 400, res, next);
+  }
+});
+
 module.exports = router;
