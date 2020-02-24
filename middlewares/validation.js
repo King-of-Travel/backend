@@ -91,9 +91,12 @@ module.exports = method => {
       ];
     case 'get-articles/user':
       return [
-        query('userId')
-          .isNumeric()
-          .withMessage('incorrect-get-user-articles-userId-field'),
+        query('username')
+          .trim()
+          .isLength({ min: 4, max: 30 })
+          .withMessage('incorrect-length-username-length')
+          .matches('^[a-zA-Z0-9]+$')
+          .withMessage('forbidden-symbols-username'),
         query('offset')
           .if(value => value.length)
           .isNumeric()

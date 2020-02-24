@@ -75,7 +75,13 @@ router.get(
         throw validationErrors.errors;
       }
 
-      let { userId, limit = 20, offset = 0 } = req.query;
+      let { username, limit = 20, offset = 0 } = req.query;
+
+      let foundUser = await models.user.findOne({
+        where: { username },
+        attributes: ['id'],
+        raw: true
+      });
 
       let foundArticles = await models.sequelize.query(
         `
@@ -88,7 +94,7 @@ router.get(
           FROM      "articles"                 AS "article" 
           LEFT JOIN "articleLikes"             AS "likes" 
           ON        "article"."id" = "likes"."articleId" 
-          WHERE     "article"."userId" = ${userId} 
+          WHERE     "article"."userId" = ${foundUser.id} 
           GROUP BY  "article"."id" 
           ORDER BY  "createdAt" DESC limit ${limit} offset ${offset}
         `,
