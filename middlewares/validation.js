@@ -61,6 +61,13 @@ module.exports = method => {
           .trim()
       ];
 
+    case 'delete/trip':
+      return [
+        param('tripId')
+          .isNumeric()
+          .withMessage('incorrect-trip-id-param-delete-trip')
+      ];
+
     case 'signup-username/check':
       return [
         body('value')

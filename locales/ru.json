@@ -48,5 +48,7 @@
 
   "no-image-field-adding-image-article": "Отсутствует поле с изображением",
   "incorrect-user-id-param-get-image-article": "ID пользователя должно состоять только из одного числа",
-  "incorrect-image-id-param-get-image-article": "ID изображения должно состоять из строки"
+  "incorrect-image-id-param-get-image-article": "ID изображения должно состоять из строки",
+
+  "incorrect-trip-id-param-delete-trip": "ID поездки должен состоять из числа"
 }
