@@ -2,8 +2,10 @@
 	"no-email-field": "Email is required",
 	"not-email": "The email must be in the format: example@example.com",
 	"not-unique-email": "Account with this e-mail is already registered",
+
 	"no-password-field": "Password is required",
 	"incorrect-password-field-length": "Password must be between 6 and 64 characters",
+
 	"no-username-field": "Username is required",
 	"incorrect-length-username-length": "Username must be between 4 and 30 characters",
 	"incorrect-username-or-email-field-length": "Username must be between 4 and 30 characters or enter an e-mail in the following format: example@example.com",
@@ -11,32 +13,45 @@
 	"not-unique-username": "Username is not available",
 	"no-username-password": "You must specify username(e-mail) and password",
 	"incorrect-username-password": "Incorrect username(e-mail) or password",
+
 	"no-country-code-field": "Country is required",
 	"incorrect-trip-country-code": "Invalid country code",
+
 	"no-city-field": "City is required",
 	"incorrect-trip-city-field-length": "City name must be between 2 and 300 characters",
+
 	"no-start-date-field": "Start date is required",
 	"no-end-date-field": "End date is required",
 	"incorrect-start-date-trip-field": "Invalid start date",
 	"incorrect-end-date-trip-field": "Invalid end date",
+
 	"incorrect-trip-article-length": "Trip article should not be longer than 2500 characters",
+	
 	"trip-not-found": "Trip not found",
+	
 	"user-not-logged": "You must be logged in",
+
 	"no-article-title-field": "Title of the article is required",
 	"no-article-body-field": "Content of the article is required",
 	"incorrect-edit-article-id-field": "The article id in the request should be from 3 to 7 characters",
 	"incorrect-edit-article-title-field": "The length of the title should be from 3 to 120 characters",
 	"incorrect-edit-article-body-field": "The content of the article should consist of an array",
+	
 	"incorrect-get-user-articles-offset-field": "The offset field must contain only one number",
 	"incorrect-get-user-articles-limit-field": "The article limit field must contain only one number",
+	
 	"article-not-found": "Article not found",
+	
 	"incorrect-put-remove-like-articleId-field": "The article id should be 7 characters long",
+	
 	"incorrect-get-article-id-field": "The article id should be 7 characters long",
+	
 	"no-image-field-adding-image-article": "Missing image field",
 	"incorrect-user-id-param-get-image-article": "User id field must contain only one number",
 	"incorrect-image-id-param-get-image-article": "Image id must consist of a string",
+	
 	"incorrect-trip-id-param-delete-trip": "ID trip should consist of a number",
-	"not-found": "not-found",
+	
 	"get-articles_incorrect-sort": "Sorting can be by new or popular articles",
 	"get-articles_incorrect-tag": "Tag must be between 1 and 255 characters",
 	"get-articles_incorrect-rating": "The rating should consist of one number",

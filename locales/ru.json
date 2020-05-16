@@ -38,7 +38,7 @@
   "incorrect-edit-article-body-field": "Содержимое статьи должно состоять из массива",
 
   "incorrect-get-user-articles-offset-field": "Поле смещения относительно прошлых статей должно содержать только одно число",
-  "The article limit field must contain only one number": "Поле лимита статей должно содержать только одно число",
+  "incorrect-get-user-articles-limit-field": "Поле лимита статей должно содержать только одно число",
 
   "article-not-found": "Статья не найдена",
 
@@ -59,3 +59,4 @@
 	"get-articles_incorrect-limit": "Лимит должен состоять только из одного числа",
 	"get-articles_incorrect-period": "Список статей может быть только за следующий период: день, неделя, месяц, неделя"
 }
+
