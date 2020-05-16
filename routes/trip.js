@@ -10,7 +10,6 @@ const router = express.Router();
 
 /*
  * Add trip
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#3f694889-32df-4b6c-902d-d5a91b036ee1
  */
 router.post(
   '/',
@@ -45,7 +44,6 @@ router.post(
 
 /*
  * Delete trip
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#7c516b70-9e12-4a13-a2be-739e14e52c58
  */
 router.delete(
   '/:tripId',

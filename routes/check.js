@@ -10,7 +10,6 @@ const upload = multer();
 
 /*
  * User Validation, uniqueness check
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#23851e9c-1418-4b4e-bc7a-4b185d4750d5
  */
 router.post(
   '/signup/username',
@@ -39,7 +38,6 @@ router.post(
 
 /*
  * Email validation, uniqueness check
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#8fd91222-8f8d-4b32-a04a-75bfc9af6386
  */
 router.post(
   '/signup/email',
@@ -68,7 +66,6 @@ router.post(
 
 /*
  * Password validation
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#4bf884cb-67f3-4979-8281-63808398c742
  */
 router.post(
   '/signup/password',

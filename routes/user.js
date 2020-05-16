@@ -9,7 +9,6 @@ const router = express.Router();
 
 /*
  * Create an account
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#f93a6969-8d9d-409e-a583-e549645c8223
  */
 router.post('/', validateInputData('create/user'), async (req, res, next) => {
   try {
@@ -35,7 +34,6 @@ router.post('/', validateInputData('create/user'), async (req, res, next) => {
 
 /*
  * Get user data
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#737b9a86-a9e0-4334-be7b-0e585ae072d9
  */
 router.get('/', validateInputData('get/user'), async (req, res, next) => {
   try {
@@ -62,7 +60,6 @@ router.get('/', validateInputData('get/user'), async (req, res, next) => {
 
 /*
  * Get user articles by user ID
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#6a0094fc-df88-4b49-b4b9-2fc89e769009
  */
 router.get(
   '/articles',
@@ -112,7 +109,6 @@ router.get(
 
 /*
  * Get user trips
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#7d651adb-394a-41d8-befa-01bed5786a86
  */
 router.get(
   '/trips',

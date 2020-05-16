@@ -14,7 +14,6 @@ const router = express.Router();
 
 /*
  * Create new article
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#43fedadc-d6a0-49d3-9597-48941787c49e
  */
 router.post(
   '/',
@@ -57,7 +56,6 @@ router.post(
 
 /*
  * Get article
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#80fa3b97-f74d-4960-bf32-a967cfa884a4
  */
 router.get('/', validateInputData('get/article'), async (req, res, next) => {
   try {
@@ -127,7 +125,6 @@ router.get('/', validateInputData('get/article'), async (req, res, next) => {
 
 /*
  * Put or remove like
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#a946dce2-bdee-433c-948e-cf5765a6db25
  */
 router.put(
   '/like',
@@ -173,7 +170,6 @@ router.put(
 
 /*
  * Get an article to edit
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#83e33098-f823-4656-8184-3d1441859b64
  */
 router.get(
   '/edit',
@@ -213,7 +209,6 @@ router.get(
 
 /*
  * Edit article
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#7a9975c4-90cc-4b70-968a-e7397c151e28
  */
 router.post(
   '/edit',
@@ -265,7 +260,6 @@ router.post(
 
 /*
  * Add image to article
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#10aa912e-64c4-4add-ae9f-9d3d7b8d2a01
  */
 
 let diskStoringArticleImage = multer.diskStorage({
@@ -316,7 +310,6 @@ router.post(
 
 /*
  * Get article image
- * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#48b47816-22ba-4256-a9b4-56bcb004268a
  */
 router.get(
   '/image/:userId/:imageId',
