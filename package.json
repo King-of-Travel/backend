@@ -14,22 +14,22 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "connect-pg-simple": "^6.1.0",
-    "cookie-parser": "~1.4.4",
+    "cookie-parser": "^1.4.5",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
-    "express-session": "^1.17.0",
+    "express-session": "^1.17.1",
     "express-validator": "^6.3.1",
     "http-errors": "~1.6.3",
-    "i18n": "^0.8.4",
+    "i18n": "^0.8.6",
     "morgan": "~1.9.1",
     "multer": "^1.4.2",
-    "nanoid": "^2.1.10",
-    "pg": "^7.17.1",
+    "nanoid": "^2.1.11",
+    "pg": "^7.18.2",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.21.3"
+    "sequelize": "^5.21.9"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.4"
   }
 }
