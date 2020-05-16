@@ -50,5 +50,12 @@
   "incorrect-user-id-param-get-image-article": "ID пользователя должно состоять только из одного числа",
   "incorrect-image-id-param-get-image-article": "ID изображения должно состоять из строки",
 
-  "incorrect-trip-id-param-delete-trip": "ID поездки должен состоять из числа"
+  "incorrect-trip-id-param-delete-trip": "ID поездки должен состоять из числа",
+  
+	"get-articles_incorrect-sort": "Сортировка может быть только по новым или популярным статьям",
+  "get-articles_incorrect-tag": "Тег должен быть от 1 до 255 символов",
+  "get-articles_incorrect-rating": "Рейтинг должен состоять только из одного числа",
+	"get-articles_incorrect-offset": "Смещение должно состоять только из одного числа",
+	"get-articles_incorrect-limit": "Лимит должен состоять только из одного числа",
+	"get-articles_incorrect-period": "Список статей может быть только за следующий период: день, неделя, месяц, неделя"
 }
