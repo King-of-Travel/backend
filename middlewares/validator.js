@@ -1,6 +1,6 @@
 const { body, query, param } = require('express-validator');
 
-module.exports = (method) => {
+function validateInputData(method) {
   switch (method) {
     case 'create/session':
       return [
@@ -198,4 +198,6 @@ module.exports = (method) => {
     default:
       break;
   }
-};
+}
+
+module.exports = { validateInputData };

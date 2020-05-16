@@ -5,7 +5,7 @@ const nanoidNonSecure = require('nanoid/non-secure');
 const { validationResult } = require('express-validator');
 
 const auth = require('../middlewares/auth');
-const validation = require('../middlewares/validation');
+const { validateInputData } = require('../middlewares/validator');
 const errorHandler = require('../middlewares/error-handler');
 const models = require('../models');
 const { generateJsonToHTML } = require('../common/editor');
@@ -19,7 +19,7 @@ const router = express.Router();
 router.post(
   '/',
   auth,
-  validation('create-edit/article'),
+  validateInputData('create-edit/article'),
   async (req, res, next) => {
     try {
       const validationErrors = validationResult(req);
@@ -37,12 +37,12 @@ router.post(
         title,
         body,
         countryCode,
-        city
+        city,
       });
 
       if (tags.length >= 1) {
         await models.articleTags.bulkCreate(
-          tags.map(tag => {
+          tags.map((tag) => {
             return { articleId: newAritcle.id, value: tag.value };
           })
         );
@@ -59,7 +59,7 @@ router.post(
  * Get article
  * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#80fa3b97-f74d-4960-bf32-a967cfa884a4
  */
-router.get('/', validation('get/article'), async (req, res, next) => {
+router.get('/', validateInputData('get/article'), async (req, res, next) => {
   try {
     let validationErrors = validationResult(req);
 
@@ -78,21 +78,21 @@ router.get('/', validation('get/article'), async (req, res, next) => {
         'countryCode',
         'city',
         'createdAt',
-        'updatedAt'
+        'updatedAt',
       ],
       include: [
         { model: models.user, attributes: ['id', 'username'] },
         {
           model: models.articleLikes,
           as: 'likes',
-          attributes: ['userId']
+          attributes: ['userId'],
         },
         {
           model: models.articleTags,
           as: 'tags',
-          attributes: ['value']
-        }
-      ]
+          attributes: ['value'],
+        },
+      ],
     });
 
     if (!foundArticle) throw 'article-not-found';
@@ -101,7 +101,7 @@ router.get('/', validation('get/article'), async (req, res, next) => {
     let currentUserRating = null;
 
     // Determine if the user who made the request is like
-    await foundArticle.likes.find(like => {
+    await foundArticle.likes.find((like) => {
       if (!user) return false;
 
       if (like.userId === user.id) {
@@ -112,7 +112,7 @@ router.get('/', validation('get/article'), async (req, res, next) => {
 
     foundArticle.dataValues.likes = {
       count: foundArticle.likes.length,
-      currentUserRating
+      currentUserRating,
     };
 
     foundArticle.dataValues.body = foundArticle.body
@@ -131,7 +131,7 @@ router.get('/', validation('get/article'), async (req, res, next) => {
  */
 router.put(
   '/like',
-  validation('put-remove-like/article'),
+  validateInputData('put-remove-like/article'),
   auth,
   async (req, res, next) => {
     try {
@@ -145,13 +145,13 @@ router.put(
       let user = req.session.user;
 
       let foundArticle = await models.article.findOne({
-        where: { id: articleId }
+        where: { id: articleId },
       });
 
       if (!foundArticle) throw 'article-not-found';
 
       let findOrCreate = await models.articleLikes.findOrCreate({
-        where: { articleId, userId: user.id }
+        where: { articleId, userId: user.id },
       });
 
       // If the user has liked, then a request to delete it
@@ -159,8 +159,8 @@ router.put(
         await models.articleLikes.destroy({
           where: {
             articleId,
-            userId: user.id
-          }
+            userId: user.id,
+          },
         });
       }
 
@@ -178,7 +178,7 @@ router.put(
 router.get(
   '/edit',
   auth,
-  validation('get-editing/article'),
+  validateInputData('get-editing/article'),
   async (req, res, next) => {
     try {
       let validationErrors = validationResult(req);
@@ -197,9 +197,9 @@ router.get(
           {
             model: models.articleTags,
             as: 'tags',
-            attributes: ['value']
-          }
-        ]
+            attributes: ['value'],
+          },
+        ],
       });
 
       if (!foundArticle) throw 'article-not-found';
@@ -218,7 +218,7 @@ router.get(
 router.post(
   '/edit',
   auth,
-  validation('edit/article'),
+  validateInputData('edit/article'),
   async (req, res, next) => {
     try {
       let validationErrors = validationResult(req);
@@ -236,7 +236,7 @@ router.post(
         { title, body, countryCode, city },
         {
           where: { id, userId: user.id },
-          raw: true
+          raw: true,
         }
       );
 
@@ -244,13 +244,13 @@ router.post(
 
       await models.articleTags.destroy({
         where: {
-          articleId: id
-        }
+          articleId: id,
+        },
       });
 
       if (tags && tags.length >= 1) {
         await models.articleTags.bulkCreate(
-          tags.map(tag => {
+          tags.map((tag) => {
             return { articleId: id, value: tag.value };
           })
         );
@@ -269,23 +269,23 @@ router.post(
  */
 
 let diskStoringArticleImage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     let userId = req.session.user.id;
     let dir = `uploads/article/${userId}`;
 
-    fs.exists(dir, exist => {
+    fs.exists(dir, (exist) => {
       if (exist) return cb(null, dir);
 
-      return fs.mkdir(dir, error => cb(error, dir));
+      return fs.mkdir(dir, (error) => cb(error, dir));
     });
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(null, nanoidNonSecure(5) + '.png');
-  }
+  },
 });
 
 let uploadArticleImage = multer({
-  storage: diskStoringArticleImage
+  storage: diskStoringArticleImage,
 });
 
 router.post(
@@ -305,8 +305,8 @@ router.post(
       res.json({
         success: 1,
         file: {
-          url: `/api/article/image/${userId}/${file.filename}`
-        }
+          url: `/api/article/image/${userId}/${file.filename}`,
+        },
       });
     } catch (error) {
       errorHandler(error, 400, res, next);
@@ -320,7 +320,7 @@ router.post(
  */
 router.get(
   '/image/:userId/:imageId',
-  validation('get-image/article'),
+  validateInputData('get-image/article'),
   async (req, res, next) => {
     try {
       let validationErrors = validationResult(req);

@@ -3,7 +3,7 @@ const { validationResult } = require('express-validator');
 
 const models = require('../models');
 const errorHandler = require('../middlewares/error-handler');
-const validation = require('../middlewares/validation');
+const { validateInputData } = require('../middlewares/validator');
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ const router = express.Router();
  * Create an account
  * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#f93a6969-8d9d-409e-a583-e549645c8223
  */
-router.post('/', validation('create/user'), async (req, res, next) => {
+router.post('/', validateInputData('create/user'), async (req, res, next) => {
   try {
     let validationErrors = validationResult(req);
 
@@ -37,7 +37,7 @@ router.post('/', validation('create/user'), async (req, res, next) => {
  * Get user data
  * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#737b9a86-a9e0-4334-be7b-0e585ae072d9
  */
-router.get('/', validation('get/user'), async (req, res, next) => {
+router.get('/', validateInputData('get/user'), async (req, res, next) => {
   try {
     let validationErrors = validationResult(req);
 
@@ -49,7 +49,7 @@ router.get('/', validation('get/user'), async (req, res, next) => {
 
     let foundUser = await models.user.findOne({
       where: { username },
-      attributes: ['id', 'username', 'createdAt']
+      attributes: ['id', 'username', 'createdAt'],
     });
 
     if (!foundUser) throw 'not-found';
@@ -66,7 +66,7 @@ router.get('/', validation('get/user'), async (req, res, next) => {
  */
 router.get(
   '/articles',
-  validation('get-articles/user'),
+  validateInputData('get-articles/user'),
   async (req, res, next) => {
     try {
       let validationErrors = validationResult(req);
@@ -80,7 +80,7 @@ router.get(
       let foundUser = await models.user.findOne({
         where: { username },
         attributes: ['id'],
-        raw: true
+        raw: true,
       });
 
       let foundArticles = await models.sequelize.query(
@@ -99,7 +99,7 @@ router.get(
           ORDER BY  "createdAt" DESC limit ${limit} offset ${offset}
         `,
         {
-          type: models.sequelize.QueryTypes.SELECT
+          type: models.sequelize.QueryTypes.SELECT,
         }
       );
 
@@ -114,40 +114,43 @@ router.get(
  * Get user trips
  * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#7d651adb-394a-41d8-befa-01bed5786a86
  */
-router.get('/trips', validation('get-trips/user'), async (req, res, next) => {
-  try {
-    let validationErrors = validationResult(req);
+router.get(
+  '/trips',
+  validateInputData('get-trips/user'),
+  async (req, res, next) => {
+    try {
+      let validationErrors = validationResult(req);
 
-    if (!validationErrors.isEmpty()) {
-      throw validationErrors.errors;
-    }
+      if (!validationErrors.isEmpty()) {
+        throw validationErrors.errors;
+      }
 
-    let { username, time = 'future', limit = 20, offset = 0 } = req.query;
+      let { username, time = 'future', limit = 20, offset = 0 } = req.query;
 
-    let foundUser = await models.user.findOne({
-      where: { username },
-      attributes: ['id'],
-      raw: true
-    });
+      let foundUser = await models.user.findOne({
+        where: { username },
+        attributes: ['id'],
+        raw: true,
+      });
 
-    if (!foundUser) throw 'not-found';
+      if (!foundUser) throw 'not-found';
 
-    let currentDate = new Date().toLocaleDateString();
+      let currentDate = new Date().toLocaleDateString();
 
-    if (time === 'past') {
-      time = `"endDate" < '${currentDate}'`;
-    }
+      if (time === 'past') {
+        time = `"endDate" < '${currentDate}'`;
+      }
 
-    if (time === 'present') {
-      time = `"startDate" < '${currentDate}' AND "endDate" > '${currentDate}'`;
-    }
+      if (time === 'present') {
+        time = `"startDate" < '${currentDate}' AND "endDate" > '${currentDate}'`;
+      }
 
-    if (time === 'future') {
-      time = `"startDate" > '${currentDate}'`;
-    }
+      if (time === 'future') {
+        time = `"startDate" > '${currentDate}'`;
+      }
 
-    let foundTrips = await models.sequelize.query(
-      `
+      let foundTrips = await models.sequelize.query(
+        `
           SELECT  "id",
                   "countryCode", 
                   "city", 
@@ -158,15 +161,16 @@ router.get('/trips', validation('get-trips/user'), async (req, res, next) => {
           WHERE  "userId" = ${foundUser.id} AND ${time}
           ORDER BY "endDate" DESC limit ${limit} offset ${offset}
         `,
-      {
-        type: models.sequelize.QueryTypes.SELECT
-      }
-    );
+        {
+          type: models.sequelize.QueryTypes.SELECT,
+        }
+      );
 
-    res.json(foundTrips);
-  } catch (error) {
-    errorHandler(error, 400, res, next);
+      res.json(foundTrips);
+    } catch (error) {
+      errorHandler(error, 400, res, next);
+    }
   }
-});
+);
 
 module.exports = router;

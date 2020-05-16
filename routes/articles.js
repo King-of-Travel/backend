@@ -2,7 +2,7 @@ const express = require('express');
 const sequelize = require('sequelize');
 const { validationResult } = require('express-validator');
 
-const validation = require('../middlewares/validation');
+const { validateInputData } = require('../middlewares/validator');
 const errorHandler = require('../middlewares/error-handler');
 const models = require('../models');
 
@@ -11,44 +11,47 @@ const router = express.Router();
 /*
  * Get articles
  */
-router.get('/', validation('artiles/get-articles'), async (req, res, next) => {
-  let validationErrors = validationResult(req);
+router.get(
+  '/',
+  validateInputData('artiles/get-articles'),
+  async (req, res, next) => {
+    let validationErrors = validationResult(req);
 
-  if (!validationErrors.isEmpty()) {
-    return errorHandler(validationErrors.errors, 400, res, next);
-  }
+    if (!validationErrors.isEmpty()) {
+      return errorHandler(validationErrors.errors, 400, res, next);
+    }
 
-  let {
-    tag,
-    rating = 0,
-    offset = 0,
-    limit = 20,
-    sort = 'top',
-    period = 'year',
-  } = req.query;
+    let {
+      tag,
+      rating = 0,
+      offset = 0,
+      limit = 20,
+      sort = 'top',
+      period = 'year',
+    } = req.query;
 
-  let date = new Date();
+    let date = new Date();
 
-  if (period === 'day') {
-    date = date.setDate(date.getDate() - 1);
-  }
+    if (period === 'day') {
+      date = date.setDate(date.getDate() - 1);
+    }
 
-  if (period === 'week') {
-    date = date.setDate(date.getDate() - 7);
-  }
+    if (period === 'week') {
+      date = date.setDate(date.getDate() - 7);
+    }
 
-  if (period === 'month') {
-    date = date.setMonth(date.getMonth() - 1);
-  }
+    if (period === 'month') {
+      date = date.setMonth(date.getMonth() - 1);
+    }
 
-  if (period === 'year') {
-    date = date.setFullYear(date.getFullYear() - 1);
-  }
+    if (period === 'year') {
+      date = date.setFullYear(date.getFullYear() - 1);
+    }
 
-  date = new Date(date).toLocaleDateString();
+    date = new Date(date).toLocaleDateString();
 
-  let articles = await models.sequelize.query(
-    `
+    let articles = await models.sequelize.query(
+      `
     SELECT 
       "article"."title", 
       "article"."createdAt", 
@@ -82,12 +85,13 @@ router.get('/', validation('artiles/get-articles'), async (req, res, next) => {
     limit 
       ${limit} offset ${offset}
     `,
-    {
-      type: sequelize.QueryTypes.SELECT,
-    }
-  );
+      {
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
 
-  res.json(articles);
-});
+    res.json(articles);
+  }
+);
 
 module.exports = router;

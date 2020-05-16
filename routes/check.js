@@ -3,7 +3,7 @@ const multer = require('multer');
 const { validationResult } = require('express-validator');
 
 const models = require('../models');
-const validation = require('../middlewares/validation');
+const { validateInputData } = require('../middlewares/validator');
 
 const router = express.Router();
 const upload = multer();
@@ -15,7 +15,7 @@ const upload = multer();
 router.post(
   '/signup/username',
   upload.none(),
-  validation('signup-username/check'),
+  validateInputData('signup-username/check'),
   async (req, res) => {
     try {
       const validationErrors = validationResult(req);
@@ -44,7 +44,7 @@ router.post(
 router.post(
   '/signup/email',
   upload.none(),
-  validation('signup-email/check'),
+  validateInputData('signup-email/check'),
   async (req, res) => {
     try {
       const validationErrors = validationResult(req);
@@ -73,7 +73,7 @@ router.post(
 router.post(
   '/signup/password',
   upload.none(),
-  validation('signup-password/check'),
+  validateInputData('signup-password/check'),
   async (req, res) => {
     try {
       const validationErrors = validationResult(req);

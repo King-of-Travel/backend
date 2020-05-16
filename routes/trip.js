@@ -2,7 +2,7 @@ const express = require('express');
 const { validationResult } = require('express-validator');
 
 const auth = require('../middlewares/auth');
-const validation = require('../middlewares/validation');
+const { validateInputData } = require('../middlewares/validator');
 const errorHandler = require('../middlewares/error-handler');
 const models = require('../models');
 
@@ -12,31 +12,36 @@ const router = express.Router();
  * Add trip
  * https://documenter.getpostman.com/view/9580525/SW7ey5Jy?version=latest#3f694889-32df-4b6c-902d-d5a91b036ee1
  */
-router.post('/', auth, validation('add/trip'), async (req, res, next) => {
-  try {
-    const validationErrors = validationResult(req);
+router.post(
+  '/',
+  auth,
+  validateInputData('add/trip'),
+  async (req, res, next) => {
+    try {
+      const validationErrors = validationResult(req);
 
-    if (!validationErrors.isEmpty()) {
-      throw validationErrors.errors;
+      if (!validationErrors.isEmpty()) {
+        throw validationErrors.errors;
+      }
+
+      const { countryCode, city, startDate, endDate } = req.body;
+
+      const userId = req.session.user.id;
+
+      await models.trip.create({
+        userId,
+        countryCode,
+        city,
+        startDate,
+        endDate,
+      });
+
+      res.sendStatus(201);
+    } catch (error) {
+      errorHandler(error, 400, res, next);
     }
-
-    const { countryCode, city, startDate, endDate } = req.body;
-
-    const userId = req.session.user.id;
-
-    await models.trip.create({
-      userId,
-      countryCode,
-      city,
-      startDate,
-      endDate
-    });
-
-    res.sendStatus(201);
-  } catch (error) {
-    errorHandler(error, 400, res, next);
   }
-});
+);
 
 /*
  * Delete trip
@@ -45,7 +50,7 @@ router.post('/', auth, validation('add/trip'), async (req, res, next) => {
 router.delete(
   '/:tripId',
   auth,
-  validation('delete/trip'),
+  validateInputData('delete/trip'),
   async (req, res, next) => {
     try {
       let validationErrors = validationResult(req);
