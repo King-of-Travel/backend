@@ -42,7 +42,7 @@ router.post(
       if (tags.length >= 1) {
         await models.articleTags.bulkCreate(
           tags.map((tag) => {
-            return { articleId: newAritcle.id, value: tag.value };
+            return { articleId: newAritcle.id, value: tag };
           })
         );
       }
@@ -246,7 +246,7 @@ router.post(
       if (tags && tags.length >= 1) {
         await models.articleTags.bulkCreate(
           tags.map((tag) => {
-            return { articleId: id, value: tag.value };
+            return { articleId: id, value: tag };
           })
         );
       }
