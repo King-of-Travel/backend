@@ -50,45 +50,57 @@ router.get(
 
     date = new Date(date).toLocaleDateString();
 
-    let articles = await models.sequelize.query(
-      `
-    SELECT 
-      "article"."title", 
-      "article"."createdAt", 
-      "article"."id", 
-      "likes" 
-    FROM 
-      articles AS "article"
-    ${
-      tag
-        ? `
-          INNER JOIN "articleTags" as "tag" ON "tag"."articleId" = "article"."id" 
-          AND "tag"."value" = '${tag}'          
-          `
-        : ''
-    } 
-    ${sort === 'top' || rating >= 1 ? 'INNER' : 'LEFT'} 
-    JOIN (
-      SELECT 
-        Count(1) AS "likes", 
-        "articleId" AS id 
-      FROM 
-        "articleLikes" 
-      GROUP BY 
-        "articleId" 
-      HAVING 
-        Count(1)>= '${rating}'
-    ) AS "likes" ON "likes"."id" = "article"."id" 
-    ${period ? `WHERE "article"."createdAt" >= '${date}'` : ''} 
-    ORDER BY 
-      "createdAt" DESC 
-    limit 
-      ${limit} offset ${offset}
-    `,
-      {
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
+    let articles = await models.sequelize
+      .query(
+        `
+        SELECT 
+          "article"."title", 
+          "article"."createdAt", 
+          "article"."id", 
+          "user"."id" AS "user.id", 
+          "user"."username" AS "user.username",
+          "likes" 
+        FROM 
+          articles AS "article"
+        ${
+          tag
+            ? `
+              INNER JOIN "articleTags" as "tag" ON "tag"."articleId" = "article"."id" 
+              AND "tag"."value" = '${tag}'          
+              `
+            : ''
+        } 
+        ${sort === 'top' || rating >= 1 ? 'INNER' : 'LEFT'} 
+        JOIN (
+          SELECT 
+            Count(1) AS "likes", 
+            "articleId" AS id 
+          FROM 
+            "articleLikes" 
+          GROUP BY 
+            "articleId" 
+          HAVING 
+            Count(1)>= '${rating}'
+        ) AS "likes" ON "likes"."id" = "article"."id" 
+        LEFT JOIN "users" AS "user" ON "article"."userId" = "user"."id"
+        ${period ? `WHERE "article"."createdAt" >= '${date}'` : ''} 
+        ORDER BY 
+          "createdAt" DESC 
+        limit 
+          ${limit} offset ${offset}
+        `,
+        {
+          type: sequelize.QueryTypes.SELECT,
+        }
+      )
+      .map((article) => {
+        return {
+          ...article,
+          user: { id: article['user.id'], username: article['user.username'] },
+          'user.id': undefined,
+          'user.username': undefined,
+        };
+      });
 
     res.json(articles);
   }
