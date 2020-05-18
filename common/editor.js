@@ -22,11 +22,11 @@ function generateJsonToHTML({ data, type }) {
               <tbody>
                 ${data.content
                   .map(
-                    tr => `
+                    (tr) => `
                     <tr>
                       ${tr
                         .map(
-                          td => `
+                          (td) => `
                             <td>${td}</td>`
                         )
                         .join('')}
@@ -42,13 +42,13 @@ function generateJsonToHTML({ data, type }) {
       return `
         <div class="block">
           <${data.style === 'ordered' ? 'ol' : 'ul'}>
-            ${data.items.map(item => `<li>${item}</li>`).join('')}
+            ${data.items.map((item) => `<li>${item}</li>`).join('')}
           </${data.style === 'ordered' ? 'ol' : 'ul'}>
         </div>`;
 
     case 'image':
       return `
-        <div class="block">
+        <figure class="block">
           <img 
             src="${data.file.url}" 
             alt="${data.caption}" 
@@ -60,7 +60,14 @@ function generateJsonToHTML({ data, type }) {
             width="${data.stretched ? 870 : ''}"
             loading="lazy"
           />
-        </div>
+          ${
+            data.caption
+              ? `
+                <figcaption><mark>${data.caption}</mark></figcaption>
+              `
+              : ''
+          }
+        </figure>
       `;
     default:
       break;
