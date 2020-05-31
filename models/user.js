@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       hooks: {
         beforeCreate: [
-          async function (user) {
+          function (user) {
             user.password = bcrypt.hashSync(user.password, 10);
           },
         ],
