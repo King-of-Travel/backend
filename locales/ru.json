@@ -7,8 +7,8 @@
   "incorrect-password-field-length": "Пароль должен быть от 6 до 64 символов",
 
   "no-username-field": "Имя пользователя обязательно к заполнению",
-  "incorrect-length-username-length": "Имя пользователя должно быть от 4 до 30 символов",
-  "incorrect-username-or-email-field-length": "Имя пользователя должно быть от 4 до 30 символов или введите адрес электронной почты в следующем формате: example@example.com",
+  "incorrect-length-username-length": "Имя пользователя должно быть от 4 до 16 символов",
+  "incorrect-username-or-email-field-length": "Имя пользователя должно быть от 4 до 16 символов или введите адрес электронной почты в следующем формате: example@example.com",
   "forbidden-symbols-username": "Имя пользователя должно состоять только из букв и цифр",
   "not-unique-username": "Имя пользователя не доступно",
   "no-username-password": "Необходимо указать имя пользователя(e-mail) и пароль",

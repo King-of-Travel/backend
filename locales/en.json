@@ -7,8 +7,8 @@
 	"incorrect-password-field-length": "Password must be between 6 and 64 characters",
 
 	"no-username-field": "Username is required",
-	"incorrect-length-username-length": "Username must be between 4 and 30 characters",
-	"incorrect-username-or-email-field-length": "Username must be between 4 and 30 characters or enter an e-mail in the following format: example@example.com",
+	"incorrect-length-username-length": "Username must be between 4 and 16 characters",
+	"incorrect-username-or-email-field-length": "Username must be between 4 and 16 characters or enter an e-mail in the following format: example@example.com",
 	"forbidden-symbols-username": "The username must contain only letters and numbers",
 	"not-unique-username": "Username is not available",
 	"no-username-password": "You must specify username(e-mail) and password",

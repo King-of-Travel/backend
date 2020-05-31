@@ -27,7 +27,7 @@ function validateInputData(method) {
       return [
         query('username')
           .trim()
-          .isLength({ min: 4, max: 30 })
+          .isLength({ min: 4, max: 16 })
           .withMessage('incorrect-length-username-length')
           .matches('^[a-zA-Z0-9]+$')
           .withMessage('forbidden-symbols-username'),
@@ -60,7 +60,7 @@ function validateInputData(method) {
       return [
         body('value')
           .trim()
-          .isLength({ min: 4, max: 30 })
+          .isLength({ min: 4, max: 16 })
           .withMessage('incorrect-length-username-length')
           .matches('^[a-zA-Z0-9]+$')
           .withMessage('forbidden-symbols-username'),
@@ -87,7 +87,7 @@ function validateInputData(method) {
       return [
         query('username')
           .trim()
-          .isLength({ min: 4, max: 30 })
+          .isLength({ min: 4, max: 16 })
           .withMessage('incorrect-length-username-length')
           .matches('^[a-zA-Z0-9]+$')
           .withMessage('forbidden-symbols-username'),
@@ -105,7 +105,7 @@ function validateInputData(method) {
       return [
         query('username')
           .trim()
-          .isLength({ min: 4, max: 30 })
+          .isLength({ min: 4, max: 16 })
           .withMessage('incorrect-length-username-length')
           .matches('^[a-zA-Z0-9]+$')
           .withMessage('forbidden-symbols-username'),

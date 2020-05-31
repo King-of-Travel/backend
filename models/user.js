@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
       },
       email: {
         type: DataTypes.STRING(64),
@@ -19,16 +19,16 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isEmail: {
             args: true,
-            msg: 'not-email'
+            msg: 'not-email',
           },
           async unique(email) {
             await sequelize.models.user
               .findOne({ where: { email } })
-              .then(user => {
+              .then((user) => {
                 if (user) throw new Error('not-unique-email');
               });
-          }
-        }
+          },
+        },
       },
       password: {
         type: DataTypes.STRING(60),
@@ -36,9 +36,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           len: {
             args: [6, 64],
-            msg: 'incorrect-password-field-length'
-          }
-        }
+            msg: 'incorrect-password-field-length',
+          },
+        },
       },
       username: {
         type: DataTypes.STRING(30),
@@ -46,38 +46,38 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         validate: {
           len: {
-            args: [4, 30],
-            msg: 'incorrect-length-username-length'
+            args: [4, 16],
+            msg: 'incorrect-length-username-length',
           },
           is: {
             args: ['^[a-zA-Z0-9]+$'],
-            msg: 'forbidden-symbols-username'
+            msg: 'forbidden-symbols-username',
           },
           async unique(username) {
             await sequelize.models.user
               .findOne({ where: { username } })
-              .then(user => {
+              .then((user) => {
                 if (user) throw new Error('not-unique-username');
               });
-          }
-        }
+          },
+        },
       },
       createdAt: DataTypes.DATE,
-      updatedAt: DataTypes.DATE
+      updatedAt: DataTypes.DATE,
     },
 
     {
       hooks: {
         beforeCreate: [
-          async function(user) {
+          async function (user) {
             user.password = bcrypt.hashSync(user.password, 10);
-          }
-        ]
-      }
+          },
+        ],
+      },
     }
   );
 
-  user.prototype.isValidPassword = function(password) {
+  user.prototype.isValidPassword = function (password) {
     return bcrypt.compareSync(password, this.password);
   };
 
