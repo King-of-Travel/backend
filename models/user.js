@@ -70,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
       hooks: {
         beforeCreate: [
           function (user) {
-            user.password = bcrypt.hashSync(user.password, 10);
+            user.password = bcrypt.hashSync(user.password);
           },
         ],
       },

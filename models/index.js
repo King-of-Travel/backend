@@ -10,27 +10,26 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 
 let sequelize = new Sequelize(
   process.env.DB_NAME,
-  process.env.DB_USERNAME,
+  process.env.DB_ROLE,
   process.env.DB_PASSWORD,
   {
-    host: process.env.DB_HOST,
     dialect: 'postgres',
-    logging: isDevelopment ? console.log : false
+    logging: isDevelopment ? console.log : false,
   }
 );
 
 fs.readdirSync(__dirname)
-  .filter(file => {
+  .filter((file) => {
     return (
       file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
     );
   })
-  .forEach(file => {
+  .forEach((file) => {
     const model = sequelize['import'](path.join(__dirname, file));
     db[model.name] = model;
   });
 
-Object.keys(db).forEach(modelName => {
+Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }

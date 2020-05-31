@@ -16,16 +16,16 @@ const app = express();
  * Sessions
  */
 const sessionPool = new Pool({
-  user: process.env.DB_USERNAME,
+  user: process.env.DB_ROLE,
   database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD
+  password: process.env.DB_PASSWORD,
 });
 
 const sessionStore = pgSession(session);
 
 app.use(
   session({
-    secret: process.env.USER_SESSIONS_SECRET,
+    secret: process.env.SESSIONS_SECRET,
     resave: false,
     rolling: true,
     saveUninitialized: true,
@@ -33,12 +33,12 @@ app.use(
       httpOnly: true,
       sameSite: true,
       maxAge: 31104000000, // 1 year
-      secure: false
+      secure: false,
     },
     store: new sessionStore({
       pool: sessionPool,
-      tableName: process.env.USER_SESSIONS_NAME
-    })
+      tableName: process.env.SESSIONS_DB_TABLE,
+    }),
   })
 );
 
@@ -51,12 +51,12 @@ app.use(i18n.init);
 app.use(require('./routes'));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.status(err.status || 500);
 
   res.json({ errors: { message: err.message } });
@@ -66,7 +66,7 @@ i18n.configure({
   locales: ['en', 'ru'],
   cookie: 'language',
   directory: __dirname + '/locales',
-  defaultLocale: 'en'
+  defaultLocale: 'en',
 });
 
 module.exports = app;
