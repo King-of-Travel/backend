@@ -37,16 +37,8 @@ function validateInputData(method) {
       return [
         body('countryCode', 'no-country-code-field').notEmpty().trim(),
         body('city', 'no-city-field').notEmpty().trim(),
-        body('startDate')
-          .if(body('endDate').notEmpty())
-          .notEmpty()
-          .withMessage('no-start-date-field')
-          .trim(),
-        body('endDate')
-          .if(body('startDate').notEmpty())
-          .notEmpty()
-          .withMessage('no-end-date-field')
-          .trim(),
+        body('startDate').notEmpty().withMessage('no-start-date-field').trim(),
+        body('endDate').notEmpty().withMessage('no-end-date-field').trim(),
       ];
 
     case 'delete/trip':
