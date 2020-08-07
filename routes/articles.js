@@ -84,7 +84,8 @@ router.get(
         ) AS "likes" ON "likes"."id" = "article"."id" 
         LEFT JOIN "users" AS "user" ON "article"."userId" = "user"."id"
         ${period ? `WHERE "article"."createdAt" >= '${date}'` : ''} 
-        ORDER BY 
+        ORDER BY
+          ${sort === 'top' || rating >= 1 ? '"likes" DESC,' : ''} 
           "createdAt" DESC 
         limit 
           ${limit} offset ${offset}
